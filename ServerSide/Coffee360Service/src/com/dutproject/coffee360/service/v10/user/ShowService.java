@@ -17,8 +17,8 @@ public class ShowService {
 	@GET
 	@Path("/place")
 	@Produces(MediaType.APPLICATION_XML)
-	public ArrayList<Place> getPlaces(RequestPlace requestPlace){
-		return placeBO.getPlaces(requestPlace);
+	public ArrayList<Place> getPlaces(double locationLat, double locationLng, double radius){
+		return placeBO.getPlaces(locationLat, locationLng, radius);
 	}
-	
+
 }
