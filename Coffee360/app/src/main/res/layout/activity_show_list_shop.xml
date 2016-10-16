@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btnReport"
+        android:layout_toStartOf="@+id/btnReport"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgShop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:src="@android:drawable/btn_star_big_on" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imgShop"
+            android:layout_toLeftOf="@+id/btnReport"
+            android:layout_toRightOf="@+id/imgShop"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextShopName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/imgShop"
+                android:layout_toRightOf="@+id/imgShop"
+                android:text="Ten quan" />
+
+            <EditText
+                android:id="@+id/editTextShopDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="thong tin quan" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="Report" />
+
+</RelativeLayout>
