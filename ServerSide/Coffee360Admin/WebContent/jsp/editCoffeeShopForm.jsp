@@ -7,26 +7,32 @@
 <title>Edit Coffee Shop Form</title>
 </head>
 <body>
+
 	<center>
+	
+		<jsp:include page="navbar.jsp"></jsp:include>
+
 		<h1>Edit Coffee Shop</h1>
-		<table>
+		<form>
+			<table>
 			<tr>
 				<td>Name</td>
-				<td><input type="#"></td>
+				<td><input type="text" name="placeName"></td>
 			</tr>
 			<tr>
 				<td>Description</td>
-				<td><input type="#"></td>
+				<td><input type="text" name="description"></td>
 			</tr>
 			<tr>
 				<td>Tag</td>
-				<td><input type="#"></td>
+				<td><input type="text" name="tags"></td>
 			</tr>
-		</table>
-		<button>Save</button>
-		<button>Cancel</button>
+			</table>
+			<input type="submit" value="Save">
+			<a href="<%=request.getContextPath() %>/CoffeeShopReport">Cancel</a>
+		</form>
+		
 	</center>
-
 
 </body>
 </html>

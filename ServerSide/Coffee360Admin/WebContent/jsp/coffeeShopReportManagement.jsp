@@ -18,58 +18,60 @@ table, th, td {
 </style>
 </head>
 <body>
+<center>
 
-<jsp:include page="navbar.jsp"></jsp:include>
-
-<h1>Coffee Shop Report</h1>
-
-<!-- table of coffee shop reports -->
-<table>
-	<!-- table headers -->
-	<tr>
-		<th>Index</th>
-		<th>Coffee Shop Name</th>
-		<th>Description</th>
-		<th>Quantity of Report</th>
-		<th>Action</th>
-	</tr>
+	<jsp:include page="navbar.jsp"></jsp:include>
 	
-	<!-- table datas -->
+	<h1>Coffee Shop Report</h1>
+	
+	<!-- table of coffee shop reports -->
+	<table>
+		<!-- table headers -->
+		<tr>
+			<th>Index</th>
+			<th>Coffee Shop Name</th>
+			<th>Description</th>
+			<th>Quantity of Report</th>
+			<th>Action</th>
+		</tr>
+		
+		<!-- table datas -->
+		<%
+			ArrayList<CoffeeShopReport> listCoffeeShopReports = (ArrayList<CoffeeShopReport>)request.getAttribute("listCoffeeShopReports");
+			int index = 1;
+			for (CoffeeShopReport report : listCoffeeShopReports) {
+		%>
+		<tr>
+			<td><%=index %></td>
+			<td><%=report.getPlaceName() %></td>
+			<td><%=report.getDescription() %></td>
+			<td><%=report.getQuantity() %></td>
+			<td>
+				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm">edit</a>
+				<a href="<%=request.getContextPath() %>/DeleteCoffeeShopReport?id=<%=report.getId() %>"  onclick="return confirm('Are you sure?')">delete</a>
+				<a href="<%=request.getContextPath() %>/IgnoreCoffeeShopReport?id=<%=report.getId() %>" onclick="return confirm('Are you sure?')">ignore</a>
+			</td>
+		</tr>
+		<%	
+			index++;
+			}
+		%>
+	</table>
+	
+	<!-- pagination -->
 	<%
-		ArrayList<CoffeeShopReport> listCoffeeShopReports = (ArrayList<CoffeeShopReport>)request.getAttribute("listCoffeeShopReports");
-		int index = 1;
-		for (CoffeeShopReport report : listCoffeeShopReports) {
-	%>
-	<tr>
-		<td><%=index %></td>
-		<td><%=report.getPlaceName() %></td>
-		<td><%=report.getDescription() %></td>
-		<td><%=report.getQuantity() %></td>
-		<td>
-			<a href="<%=request.getContextPath() %>/EditCoffeeShopForm">edit</a>
-			<a href="<%=request.getContextPath() %>/DeleteCoffeeShopReport?id=<%=report.getId() %>"  onclick="return confirm('Are you sure?')">delete</a>
-			<a href="<%=request.getContextPath() %>/IgnoreCoffeeShopReport?id=<%=report.getId() %>" onclick="return confirm('Are you sure?')">ignore</a>
-		</td>
-	</tr>
-	<%	
-		index++;
+		int pageNumber = (Integer) request.getAttribute("pageNumber");
+		int maxPageNumber = (Integer) request.getAttribute("maxPageNumber");
+		int previousPageNumber = pageNumber - 1;
+		int nextPageNumber = pageNumber + 1;
+		if (nextPageNumber > maxPageNumber) {
+			nextPageNumber = maxPageNumber;
 		}
 	%>
-</table>
+	<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=previousPageNumber %>">&lt;Trước</a>
+	<input value="<%=pageNumber %>" size="1">/<%=maxPageNumber %>
+	<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=nextPageNumber %>">Sau&gt;</a>
 
-<!-- pagination -->
-<%
-	int pageNumber = (Integer) request.getAttribute("pageNumber");
-	int maxPageNumber = (Integer) request.getAttribute("maxPageNumber");
-	int previousPageNumber = pageNumber - 1;
-	int nextPageNumber = pageNumber + 1;
-	if (nextPageNumber > maxPageNumber) {
-		nextPageNumber = maxPageNumber;
-	}
-%>
-<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=previousPageNumber %>">&lt;Trước</a>
-<input value="<%=pageNumber %>" size="1">/<%=maxPageNumber %>
-<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=nextPageNumber %>">Sau&gt;</a>
-
+</center>
 </body>
 </html>
