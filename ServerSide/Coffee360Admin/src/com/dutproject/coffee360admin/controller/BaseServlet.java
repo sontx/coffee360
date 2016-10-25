@@ -11,36 +11,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected HttpServletResponse response;
-	protected HttpServletRequest request;
 
     public BaseServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.init(request, response);
-		this.doWork();
+		doWork(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.init(request, response);
-		this.doWork();
+		doWork(request, response);
 	}
 	
-	protected abstract void doWork() throws IOException;
+	protected abstract void doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 	
-	protected void setAttribute(String attributeName, Object attributeValue) {
-		request.getSession().setAttribute(attributeName, attributeValue);
-	}
-	
-	protected void sendRedirect(String url) throws IOException {
-		this.response.sendRedirect(url);
-	}
-	
-	private void init(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-	}
-
 }
