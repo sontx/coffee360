@@ -28,7 +28,7 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 			double latMax = locationLat + radius;
 			double lngMin = locationLng - radius;
 			double lngMax = locationLng + radius;
-			String sql = String.format("SELECT place.placeId, place.name AS placeName, place.tag, place.description, place.thumbnailId, address.addressId, address.name AS addressName, address.locationLat, address.locationLng FROM place INNER JOIN address ON place.addressId=address.addressId WHERE (address.locationLat>=%d AND address.locationLat<=%d) AND (address.locationLng>=%d AND address.locationLng<=%d)", latMin, latMax, lngMin, lngMax);
+			String sql = String.format("SELECT place.placeId, place.name AS placeName, place.tag, place.description, place.thumbnailId, address.addressId, address.name AS addressName, address.locationLat, address.locationLng FROM place INNER JOIN address ON place.addressId=address.addressId WHERE (address.locationLat>=%f AND address.locationLat<=%f) AND (address.locationLng>=%f AND address.locationLng<=%f)", latMin, latMax, lngMin, lngMax);
 			ResultSet resultSet = statement.executeQuery(sql);
 			ArrayList<Place> places = new ArrayList<>();
 			while (resultSet.next()) {
