@@ -12,4 +12,9 @@ public class ReportTemplateDAO implements IReportProvider {
 		return Template.getPlaceReports();
 	}
 
+	@Override
+	public int getPlacesCount() {
+		return Template.getPlaceReports().size();
+	}
+
 }

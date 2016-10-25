@@ -8,6 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.dutproject.coffee360.model.bean.IntegerValue;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bo.ReportBO;
 
@@ -23,5 +24,16 @@ public class ReportService {
 			@PathParam("fromIndex") int fromIndex,
 			@PathParam("toIndex") int toIndex) {
 		return reportBO.getPlaceReports(fromIndex, toIndex);
+	}
+	
+	@GET
+	@Path("/placesCount")
+	@Produces(MediaType.APPLICATION_XML)
+	public IntegerValue getPlacesCount(
+			@PathParam("accessToken") String accessToken) {
+		int count = reportBO.getPlacesCount();
+		IntegerValue value = new IntegerValue();
+		value.setValue(count);
+		return value;
 	}
 }

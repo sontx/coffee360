@@ -6,4 +6,6 @@ import com.dutproject.coffee360.model.bean.Report;
 
 public interface IReportProvider {
 	List<Report> getPlaceReports(int fromIndex, int toIndex);
+
+	int getPlacesCount();
 }
