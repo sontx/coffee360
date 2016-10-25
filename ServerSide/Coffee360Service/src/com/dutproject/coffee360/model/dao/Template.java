@@ -12,10 +12,12 @@ public class Template {
 
 		Place place = new Place();
 		place.setName("place 1");
+		place.setId(0);
 		places.add(place);
 
 		place = new Place();
 		place.setName("place 2");
+		place.setId(1);
 		places.add(place);
 
 		return places;

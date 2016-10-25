@@ -6,7 +6,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.dutproject.coffee360.model.bean.*;
 import com.dutproject.coffee360.model.bo.PlaceBO;
@@ -19,10 +21,18 @@ public class ShowService {
 	@Path("/place")
 	@Produces(MediaType.APPLICATION_XML)
 	public ArrayList<Place> getPlaces(
-			@PathParam("latitude") double locationLat, 
-			@PathParam("longitude") double locationLng,
-			@PathParam("radius") double radius) {
+			@QueryParam("latitude") double locationLat, 
+			@QueryParam("longitude") double locationLng,
+			@QueryParam("radius") double radius) {
 		return placeBO.getPlaces(locationLat, locationLng, radius);
+	}
+
+	@GET
+	@Path("/placeId")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPlace(@QueryParam("id") int id) {
+		Place place = placeBO.getPlace(id);
+		return Response.status(200).entity(place).build();
 	}
 
 }

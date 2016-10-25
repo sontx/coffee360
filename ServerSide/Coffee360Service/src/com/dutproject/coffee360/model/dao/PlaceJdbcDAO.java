@@ -53,4 +53,10 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 		}
 	}
 
+	@Override
+	public Place getPlace(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

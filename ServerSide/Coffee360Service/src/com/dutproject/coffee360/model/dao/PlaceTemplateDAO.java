@@ -12,4 +12,14 @@ public class PlaceTemplateDAO implements IPlaceProvider {
 		return Template.getPlaces();
 	}
 
+	@Override
+	public Place getPlace(int id) {
+		ArrayList<Place> places = Template.getPlaces();
+		for (Place place : places) {
+			if (place.getId() == id)
+				return place;
+		}
+		return null;
+	}
+
 }

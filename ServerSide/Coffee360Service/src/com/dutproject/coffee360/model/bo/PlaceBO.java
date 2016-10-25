@@ -20,4 +20,8 @@ public class PlaceBO {
 		return null;
 	}
 
+	public Place getPlace(int id) {
+		return placeDAO.getPlace(id);
+	}
+
 }
