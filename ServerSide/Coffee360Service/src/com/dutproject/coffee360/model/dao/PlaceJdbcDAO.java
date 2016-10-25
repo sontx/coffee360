@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import com.dutproject.coffee360.model.bean.Address;
 import com.dutproject.coffee360.model.bean.Place;
-import com.dutproject.coffee360.model.bean.RequestPlace;
 import com.dutproject.coffee360.model.dao.jdbc.DatabaseManager;
 import com.dutproject.coffee360.model.dao.jdbc.IConnectionProvider;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
@@ -20,12 +19,16 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 	}
 
 	@Override
-	public ArrayList<Place> getPlaces(RequestPlace requestPlace) throws Throwable {
+	public ArrayList<Place> getPlaces(double locationLat, double locationLng, double radius) throws Throwable {
 		Connection connection = connectionProvider.getConnection();
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
-			String sql = String.format("SELECT place.placeId, place.name AS placeName, place.tag, place.description, place.thumbnailId, address.addressId, address.name AS addressName, address.locationLat, address.locationLng FROM place INNER JOIN address ON place.addressId=address.addressId");
+			double latMin = locationLat - radius;
+			double latMax = locationLat + radius;
+			double lngMin = locationLng - radius;
+			double lngMax = locationLng + radius;
+			String sql = String.format("SELECT place.placeId, place.name AS placeName, place.tag, place.description, place.thumbnailId, address.addressId, address.name AS addressName, address.locationLat, address.locationLng FROM place INNER JOIN address ON place.addressId=address.addressId WHERE (address.locationLat>=%f AND address.locationLat<=%f) AND (address.locationLng>=%f AND address.locationLng<=%f)", latMin, latMax, lngMin, lngMax);
 			ResultSet resultSet = statement.executeQuery(sql);
 			ArrayList<Place> places = new ArrayList<>();
 			while (resultSet.next()) {
