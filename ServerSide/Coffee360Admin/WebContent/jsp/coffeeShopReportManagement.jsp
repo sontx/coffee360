@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.dutproject.coffee360admin.model.bean.CoffeeShopReport"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -33,16 +35,26 @@ table, th, td {
 	</tr>
 	
 	<!-- table datas -->
+	<%
+		ArrayList<CoffeeShopReport> listCoffeeShopReports = (ArrayList<CoffeeShopReport>)request.getAttribute("listCoffeeShopReports");
+		int index = 1;
+		for (CoffeeShopReport report : listCoffeeShopReports) {
+	%>
 	<tr>
-		<td>01</td>
-		<td>Cafe Fullhouse</td>
-		<td>586/8 Ton Duc Thang</td>
-		<td>30</td>
+		<td><%=index %></td>
+		<td><%=report.getPlaceName() %></td>
+		<td><%=report.getDescription() %></td>
+		<td><%=report.getQuantity() %></td>
 		<td>
-			<a href="#">delete</a>
-			<a href="#">ignore</a>
+			<a href="<%=request.getContextPath() %>/EditCoffeeShopForm">edit</a>
+			<a href="<%=request.getContextPath() %>/DeleteCoffeeShopReport?id=<%=report.getId() %>"  onclick="return confirm('Are you sure?')">delete</a>
+			<a href="<%=request.getContextPath() %>/IgnoreCoffeeShopReport?id=<%=report.getId() %>" onclick="return confirm('Are you sure?')">ignore</a>
 		</td>
 	</tr>
+	<%	
+		index++;
+		}
+	%>
 </table>
 
 <!-- pagination -->
@@ -55,9 +67,9 @@ table, th, td {
 		nextPageNumber = maxPageNumber;
 	}
 %>
-<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=previousPageNumber%>">&lt;Trước</a>
-<input value="<%=pageNumber%>" size="1">/<%=maxPageNumber%>
-<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=nextPageNumber%>">Sau&gt;</a>
+<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=previousPageNumber %>">&lt;Trước</a>
+<input value="<%=pageNumber %>" size="1">/<%=maxPageNumber %>
+<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=nextPageNumber %>">Sau&gt;</a>
 
 </body>
 </html>
