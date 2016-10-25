@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 
 <div>
-	<a href="../CoffeeShopReport">Coffee shop report</a>
+	<a href="<%=request.getContextPath() %>/CoffeeShopReport">Coffee shop report</a>
 	|
-	<a href="../ImageReport">Picture report</a>
+	<a href="<%=request.getContextPath() %>/ImageReport">Picture report</a>
 	|
-	Hi, Admin <a href="../Logout">Logout</a>
+	Hi, Admin <a href="<%=request.getContextPath() %>/Logout">Logout</a>
 </div>
