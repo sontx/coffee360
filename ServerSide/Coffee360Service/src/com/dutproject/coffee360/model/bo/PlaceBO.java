@@ -24,4 +24,8 @@ public class PlaceBO {
 		return placeDAO.getPlace(id);
 	}
 
+	public Place addPlace(Place place) {
+		return placeDAO.addPlace(place);
+	}
+
 }

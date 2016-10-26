@@ -22,4 +22,9 @@ public class PlaceTemplateDAO implements IPlaceProvider {
 		return null;
 	}
 
+	@Override
+	public Place addPlace(Place place) {
+		return place;
+	}
+
 }

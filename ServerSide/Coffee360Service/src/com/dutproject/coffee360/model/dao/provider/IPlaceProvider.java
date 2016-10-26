@@ -8,4 +8,6 @@ public interface IPlaceProvider {
 	ArrayList<Place> getPlaces(double locationLat, double locationLng, double radius) throws Throwable;
 
 	Place getPlace(int id);
+
+	Place addPlace(Place place);
 }
