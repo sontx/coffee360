@@ -20,17 +20,18 @@ public class ShowService {
 	@GET
 	@Path("/place")
 	@Produces(MediaType.APPLICATION_XML)
-	public ArrayList<Place> getPlaces(
+	public Response getPlaces(
 			@QueryParam("latitude") double locationLat, 
 			@QueryParam("longitude") double locationLng,
 			@QueryParam("radius") double radius) {
-		return placeBO.getPlaces(locationLat, locationLng, radius);
+		ArrayList<Place> places = placeBO.getPlaces(locationLat, locationLng, radius);
+		return Response.status(200).entity(places).build();
 	}
 
 	@GET
-	@Path("/placeId")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlace(@QueryParam("id") int id) {
+	public Response getPlace(@PathParam("id") int id) {
 		Place place = placeBO.getPlace(id);
 		return Response.status(200).entity(place).build();
 	}
