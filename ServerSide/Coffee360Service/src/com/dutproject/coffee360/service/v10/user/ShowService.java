@@ -18,14 +18,14 @@ public class ShowService {
 	private PlaceBO placeBO = new PlaceBO();
 
 	@GET
-	@Path("/place")
+	@Path("/places")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlaces(
+	public ArrayList<Place> getPlaces(
 			@QueryParam("latitude") double locationLat, 
 			@QueryParam("longitude") double locationLng,
 			@QueryParam("radius") double radius) {
 		ArrayList<Place> places = placeBO.getPlaces(locationLat, locationLng, radius);
-		return Response.status(200).entity(places).build();
+		return places;
 	}
 
 	@GET
