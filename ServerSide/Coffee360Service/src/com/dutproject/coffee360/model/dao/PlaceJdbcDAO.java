@@ -65,4 +65,10 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 		return null;
 	}
 
+	@Override
+	public boolean deletePlace(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

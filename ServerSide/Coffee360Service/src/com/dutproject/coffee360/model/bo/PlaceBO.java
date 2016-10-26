@@ -28,4 +28,8 @@ public class PlaceBO {
 		return placeDAO.addPlace(place);
 	}
 
+	public boolean deletePlace(int id) {
+		return placeDAO.deletePlace(id);
+	}
+
 }

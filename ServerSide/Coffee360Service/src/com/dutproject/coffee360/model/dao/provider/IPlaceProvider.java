@@ -10,4 +10,6 @@ public interface IPlaceProvider {
 	Place getPlace(int id);
 
 	Place addPlace(Place place);
+
+	boolean deletePlace(int id);
 }

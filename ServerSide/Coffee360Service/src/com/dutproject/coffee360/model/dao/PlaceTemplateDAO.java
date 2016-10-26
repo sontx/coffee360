@@ -27,4 +27,10 @@ public class PlaceTemplateDAO implements IPlaceProvider {
 		return place;
 	}
 
+	@Override
+	public boolean deletePlace(int id) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }
