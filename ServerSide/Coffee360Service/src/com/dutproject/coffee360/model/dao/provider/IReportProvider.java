@@ -8,4 +8,6 @@ public interface IReportProvider {
 	List<Report> getPlaceReports(int fromIndex, int toIndex);
 
 	int getPlacesCount();
+
+	boolean deletePlace(int id);
 }

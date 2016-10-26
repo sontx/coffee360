@@ -17,4 +17,9 @@ public class ReportTemplateDAO implements IReportProvider {
 		return Template.getPlaceReports().size();
 	}
 
+	@Override
+	public boolean deletePlace(int id) {
+		return true;
+	}
+
 }
