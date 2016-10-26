@@ -14,7 +14,7 @@ public class StartupManager implements ServletContextListener {
     }
     
     public void contextInitialized(ServletContextEvent arg0)  { 
-    	DatabaseManager.getInstance();
+    	//DatabaseManager.getInstance();
     }
 	
 }
