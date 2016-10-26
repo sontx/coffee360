@@ -1,5 +1,6 @@
 package com.dutproject.coffee360.service.v10.user;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,10 +17,11 @@ public class PlaceService {
 	
 	@POST
 	@Path("/add")
+	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public Response addPlace(
 			@QueryParam("accessToken") String accessToken,
-			@QueryParam("place") Place place){
+			Place place){
 		Place result = placeBO.addPlace(place);
 		return Response.status(200).entity(result).build();
 	}
