@@ -32,4 +32,10 @@ public class ReportTemplateDAO implements IReportProvider {
 		return null;
 	}
 
+	@Override
+	public int getPlaceQuantity(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

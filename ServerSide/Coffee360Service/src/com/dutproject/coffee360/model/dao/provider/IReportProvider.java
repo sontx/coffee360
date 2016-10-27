@@ -12,4 +12,6 @@ public interface IReportProvider {
 	boolean deletePlace(int id);
 
 	Report getPlaceReport(int id);
+
+	int getPlaceQuantity(int id);
 }

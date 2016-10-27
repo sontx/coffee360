@@ -24,4 +24,8 @@ public class ReportBO {
 	public Report getPlaceReport(int id) {
 		return reportProvider.getPlaceReport(id);
 	}
+
+	public int getPlaceQuantity(int id) {
+		return reportProvider.getPlaceQuantity(id);
+	}
 }

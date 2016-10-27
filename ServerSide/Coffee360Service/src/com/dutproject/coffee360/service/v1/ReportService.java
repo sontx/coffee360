@@ -38,6 +38,18 @@ public class ReportService {
 		Report report = reportBO.getPlaceReport(id);
 		return Response.status(200).entity(report).build();
 	}
+	
+	@GET
+	@Path("/place/quantity")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPlaceQuantity(
+			@QueryParam("accessToken") String accessToken,
+			@QueryParam("id") int id) {
+		int count = reportBO.getPlaceQuantity(id);
+		PrimitiveType<Integer> integerType = new PrimitiveType<>();
+		integerType.setValue(count);
+		return Response.status(200).entity(integerType).build();
+	}
 
 	@GET
 	@Path("/place/count")
