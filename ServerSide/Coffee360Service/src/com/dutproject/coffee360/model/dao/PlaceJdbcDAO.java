@@ -2,6 +2,7 @@ package com.dutproject.coffee360.model.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -54,8 +55,36 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 	}
 
 	@Override
-	public Place getPlace(int id) {
-		// TODO Auto-generated method stub
+	public Place getPlace(int id) throws Throwable {
+		Connection connection = connectionProvider.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = String.format(
+					"SELECT place.placeId, place.name AS placeName, place.tag, place.description, place.thumbnailId, " + 
+					"address.addressId, address.name AS addressName, address.locationLat, address.locationLng " +
+					"FROM place INNER JOIN address ON place.addressId=address.addressId WHERE place.placeId=%d", id);
+			ResultSet resultSet = statement.executeQuery(sql);
+			if (resultSet.next()) {
+				Place place = new Place();
+				place.setId(resultSet.getInt("placeId"));
+				place.setName(resultSet.getString("placeName"));
+				place.setTag(resultSet.getString("tag"));
+				place.setDescription(resultSet.getString("description"));
+				place.setThumbnailId(resultSet.getInt("thumbnailId"));
+				Address address = new Address();
+				address.setId(resultSet.getInt("addressId"));
+				address.setName(resultSet.getString("addressName"));
+				address.setLocationLat(resultSet.getDouble("locationLat"));
+				address.setLocationLng(resultSet.getDouble("locationLng"));
+				place.setAddress(address);
+				return place;
+			}
+		} finally {
+			if (statement != null)
+				statement.close();
+		}
+		
 		return null;
 	}
 

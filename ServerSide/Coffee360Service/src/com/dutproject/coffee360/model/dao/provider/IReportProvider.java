@@ -10,4 +10,6 @@ public interface IReportProvider {
 	int getPlacesCount();
 
 	boolean deletePlace(int id);
+
+	Report getPlaceReport(int id);
 }

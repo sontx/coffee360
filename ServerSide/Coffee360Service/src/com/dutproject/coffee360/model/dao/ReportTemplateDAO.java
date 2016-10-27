@@ -22,4 +22,14 @@ public class ReportTemplateDAO implements IReportProvider {
 		return true;
 	}
 
+	@Override
+	public Report getPlaceReport(int id) {
+		List<Report> reports = Template.getPlaceReports();
+		for (Report report : reports) {
+			if (report.getId() == id)
+				return report;
+		}
+		return null;
+	}
+
 }

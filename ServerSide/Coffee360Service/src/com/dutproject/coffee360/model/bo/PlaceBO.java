@@ -21,7 +21,13 @@ public class PlaceBO {
 	}
 
 	public Place getPlace(int id) {
-		return placeDAO.getPlace(id);
+		try {
+			return placeDAO.getPlace(id);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public Place addPlace(Place place) {

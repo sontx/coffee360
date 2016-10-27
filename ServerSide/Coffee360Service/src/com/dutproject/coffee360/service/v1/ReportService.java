@@ -28,6 +28,16 @@ public class ReportService {
 		GenericEntity<List<Report>> entity = new GenericEntity<List<Report>>(reports) {};
 		return Response.status(200).entity(entity).build();
 	}
+	
+	@GET
+	@Path("/place/getone")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPlaceReports(
+			@QueryParam("accessToken") String accessToken, 
+			@QueryParam("id") int id) {
+		Report report = reportBO.getPlaceReport(id);
+		return Response.status(200).entity(report).build();
+	}
 
 	@GET
 	@Path("/place/count")

@@ -20,4 +20,8 @@ public class ReportBO {
 	public boolean deletePlace(int id) {
 		return reportProvider.deletePlace(id);
 	}
+
+	public Report getPlaceReport(int id) {
+		return reportProvider.getPlaceReport(id);
+	}
 }
