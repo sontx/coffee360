@@ -1,5 +1,6 @@
 package com.dutproject.coffee360.model.bo;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.dutproject.coffee360.model.bean.Place;
@@ -8,7 +9,7 @@ import com.dutproject.coffee360.model.dao.PlaceTemplateDAO;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
 public class PlaceBO {
-	private IPlaceProvider placeDAO = new PlaceTemplateDAO();
+	private IPlaceProvider placeDAO = new PlaceJdbcDAO();
 	
 	public ArrayList<Place>  getPlaces(double locationLat, double locationLng, double radius) {
 		try {
@@ -31,7 +32,13 @@ public class PlaceBO {
 	}
 
 	public Place addPlace(Place place) {
-		return placeDAO.addPlace(place);
+		try {
+			return placeDAO.addPlace(place);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public boolean deletePlace(int id) {

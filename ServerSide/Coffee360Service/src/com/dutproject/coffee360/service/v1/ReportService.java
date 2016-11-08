@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bo.ReportBO;
@@ -59,6 +60,5 @@ public class ReportService {
 		PrimitiveType<Integer> integerType = new PrimitiveType<>();
 		integerType.setValue(count);
 		return Response.status(200).entity(integerType).build();
-	}
-	
+	}	
 }
