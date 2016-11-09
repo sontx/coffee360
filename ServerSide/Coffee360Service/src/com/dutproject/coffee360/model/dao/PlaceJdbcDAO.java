@@ -34,12 +34,12 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 			double lngMin = locationLng - radius;
 			double lngMax = locationLng + radius;
 			String sql = String.format(
-					"SELECT place.placeId, place.placeName, place.description, place.thumbnailId, " +
-				    "address.addressId, address.addressName, "+
-					"googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude " +
-				    "FROM place INNER JOIN address ON place.addressId=address.addressId " +
-					"INNER JOIN googlemapscoordinates ON address.googleMapsCoordinatesId=googlemapscoordinates.googleMapsCoordinatesId " +
-				    "WHERE (googlemapscoordinates.locationLatitude>=%f AND googlemapscoordinates.locationLatitude<=%f) AND (googlemapscoordinates.locationLongitude>=%f AND googlemapscoordinates.locationLongitude<=%f)", 
+					"SELECT place.placeId, place.placeName, place.description, place.thumbnailId, "
+							+ "address.addressId, address.addressName, "
+							+ "googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude "
+							+ "FROM place INNER JOIN address ON place.addressId=address.addressId "
+							+ "INNER JOIN googlemapscoordinates ON address.googleMapsCoordinatesId=googlemapscoordinates.googleMapsCoordinatesId "
+							+ "WHERE (googlemapscoordinates.locationLatitude>=%f AND googlemapscoordinates.locationLatitude<=%f) AND (googlemapscoordinates.locationLongitude>=%f AND googlemapscoordinates.locationLongitude<=%f)",
 					latMin, latMax, lngMin, lngMax);
 			ResultSet resultSet = statement.executeQuery(sql);
 			ArrayList<Place> places = new ArrayList<>();
@@ -49,27 +49,27 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 				place.setName(resultSet.getString("placeName"));
 				place.setDescription(resultSet.getString("description"));
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
-				
+
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
 				address.setName(resultSet.getString("addressName"));
 				address.setLocationLat(resultSet.getDouble("locationLatitude"));
 				address.setLocationLng(resultSet.getDouble("locationLongitude"));
 				place.setAddress(address);
-				
+
 				sql = String.format("SELECT tagId FROM placetag WHERE placeId=%d", place.getId());
 				ResultSet tagsResultSet = statementTags.executeQuery(sql);
 				List<Integer> tagIds = new ArrayList<>();
 				while (tagsResultSet.next()) {
 					tagIds.add(tagsResultSet.getInt("tagId"));
 				}
-				//tagsResultSet.close();
+				// tagsResultSet.close();
 				int[] tagIdsArray = new int[tagIds.size()];
 				for (int i = 0; i < tagIdsArray.length; i++) {
 					tagIdsArray[i] = tagIds.get(i);
 				}
 				place.setTagIds(tagIdsArray);
-				
+
 				places.add(place);
 			}
 			return places;
@@ -87,14 +87,12 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
-			String sql = String.format(
-					"SELECT place.placeId, place.placeName, place.description, place.thumbnailId, " +
-					"address.addressId, address.addressName, "+
-					"googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude " +
-					"FROM place INNER JOIN address ON place.addressId=address.addressId " +
-					"INNER JOIN googlemapscoordinates ON address.googleMapsCoordinatesId=googlemapscoordinates.googleMapsCoordinatesId " +
-					"WHERE place.placeId=%d", 
-					id);
+			String sql = String.format("SELECT place.placeId, place.placeName, place.description, place.thumbnailId, "
+					+ "address.addressId, address.addressName, "
+					+ "googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude "
+					+ "FROM place INNER JOIN address ON place.addressId=address.addressId "
+					+ "INNER JOIN googlemapscoordinates ON address.googleMapsCoordinatesId=googlemapscoordinates.googleMapsCoordinatesId "
+					+ "WHERE place.placeId=%d", id);
 			ResultSet resultSet = statement.executeQuery(sql);
 			if (resultSet.next()) {
 				Place place = new Place();
@@ -102,14 +100,14 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 				place.setName(resultSet.getString("placeName"));
 				place.setDescription(resultSet.getString("description"));
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
-				
+
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
 				address.setName(resultSet.getString("addressName"));
 				address.setLocationLat(resultSet.getDouble("locationLatitude"));
 				address.setLocationLng(resultSet.getDouble("locationLongitude"));
 				place.setAddress(address);
-				
+
 				sql = String.format("SELECT tagId FROM placetag WHERE placeId=%d", place.getId());
 				ResultSet tagsResultSet = statement.executeQuery(sql);
 				List<Integer> tagIds = new ArrayList<>();
@@ -122,7 +120,7 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 					tagIdsArray[i] = tagIds.get(i);
 				}
 				place.setTagIds(tagIdsArray);
-				
+
 				resultSet.close();
 				return place;
 			}
@@ -199,9 +197,39 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 	}
 
 	@Override
-	public boolean deletePlace(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deletePlace(int id) throws Throwable {
+		Place place = getPlace(id);
+		if (place == null)
+			return false;
+		Connection connection = connectionProvider.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			// delete place tags
+			String sql = String.format("DELETE FROM placetag WHERE placeId=%d", id);
+			statement.executeUpdate(sql);
+			// delete place
+			sql = String.format("DELETE FROM place WHERE placeId=%d", id);
+			statement.executeUpdate(sql);
+			int googleMapsCoordinatesId = -1;
+			// get googlemap id
+			sql = String.format("SELECT googleMapsCoordinatesId FROM address WHERE addressId=%d", place.getAddress().getId());
+			ResultSet resultSet = statement.executeQuery(sql);
+			if (resultSet.next())
+				googleMapsCoordinatesId = resultSet.getInt("googleMapsCoordinatesId");
+			resultSet.close();
+			// delete address
+			sql = String.format("DELETE FROM address WHERE addressId=%d", place.getAddress().getId());
+			statement.executeUpdate(sql);
+			// delete googlemaps
+			sql = String.format("DELETE FROM googlemapscoordinates WHERE googleMapsCoordinatesId=%d",
+					googleMapsCoordinatesId);
+			statement.executeUpdate(sql);
+		} finally {
+			if (statement != null)
+				statement.close();
+		}
+		return true;
 	}
 
 }

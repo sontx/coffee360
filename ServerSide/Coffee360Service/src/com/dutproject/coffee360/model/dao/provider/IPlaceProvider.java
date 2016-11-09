@@ -12,5 +12,5 @@ public interface IPlaceProvider {
 
 	Place addPlace(Place place) throws SQLException;
 
-	boolean deletePlace(int id);
+	boolean deletePlace(int id) throws Throwable;
 }
