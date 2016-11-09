@@ -25,8 +25,10 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 	public ArrayList<Place> getPlaces(double locationLat, double locationLng, double radius) throws Throwable {
 		Connection connection = connectionProvider.getConnection();
 		Statement statement = null;
+		Statement statementTags = null;
 		try {
 			statement = connection.createStatement();
+			statementTags = connection.createStatement();
 			double latMin = locationLat - radius;
 			double latMax = locationLat + radius;
 			double lngMin = locationLng - radius;
@@ -56,12 +58,12 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 				place.setAddress(address);
 				
 				sql = String.format("SELECT tagId FROM placetag WHERE placeId=%d", place.getId());
-				ResultSet tagsResultSet = statement.executeQuery(sql);
+				ResultSet tagsResultSet = statementTags.executeQuery(sql);
 				List<Integer> tagIds = new ArrayList<>();
 				while (tagsResultSet.next()) {
 					tagIds.add(tagsResultSet.getInt("tagId"));
 				}
-				tagsResultSet.close();
+				//tagsResultSet.close();
 				int[] tagIdsArray = new int[tagIds.size()];
 				for (int i = 0; i < tagIdsArray.length; i++) {
 					tagIdsArray[i] = tagIds.get(i);
@@ -74,6 +76,8 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 		} finally {
 			if (statement != null)
 				statement.close();
+			if (statementTags != null)
+				statementTags.close();
 		}
 	}
 
@@ -119,8 +123,10 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 				}
 				place.setTagIds(tagIdsArray);
 				
+				resultSet.close();
 				return place;
 			}
+			resultSet.close();
 		} finally {
 			if (statement != null)
 				statement.close();
