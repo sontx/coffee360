@@ -1,0 +1,5 @@
+package com.dutproject.coffee360.service;
+
+public enum Role {
+	ROLE_USER, ROLE_ADMIN
+}

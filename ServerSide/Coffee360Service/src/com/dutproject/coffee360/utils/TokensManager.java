@@ -15,8 +15,19 @@ public final class TokensManager {
 			instance = new TokensManager();
 		return instance;
 	}
-
-	public String issueToken(Account account) {
+	
+	private String getTokenIfExists(Account account) {
+		synchronized (lock) {
+			for(String token : tokensHolder.keySet()){
+				TokenExtraInfo extraInfo = tokensHolder.get(token);
+				if (extraInfo.accountId == account.getId())
+					return token;
+			}
+			return null;
+		}
+	}
+	
+	private String generateToken(Account account) {
 		String token = SecuredTokenFactory.generateSecuredToken();
 		TokenExtraInfo extraInfo = new TokenExtraInfo();
 		extraInfo.setAccountId(account.getId());
@@ -25,6 +36,19 @@ public final class TokensManager {
 			tokensHolder.put(token, extraInfo);
 		}
 		return token;
+	}
+
+	public String issueToken(Account account) {
+		String token = getTokenIfExists(account);
+		return token != null ? token : generateToken(account);
+	}
+	
+	public void validateToken(String token) throws Exception {
+		synchronized (lock) {
+			TokenExtraInfo extraInfo = tokensHolder.get(token);
+			if (extraInfo == null)
+				throw new Exception();
+		}
 	}
 
 	private TokensManager() {
@@ -54,4 +78,5 @@ public final class TokensManager {
 			return false;
 		}
 	}
+
 }

@@ -13,8 +13,11 @@ import javax.ws.rs.core.Response;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bo.ReportBO;
+import com.dutproject.coffee360.service.Role;
+import com.dutproject.coffee360.service.Secured;
 
 @Path("/v1/report")
+@Secured({Role.ROLE_ADMIN})
 public class ReportService {
 	private ReportBO reportBO = new ReportBO();
 
@@ -22,7 +25,6 @@ public class ReportService {
 	@Path("/place/get")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getPlaceReports(
-			@QueryParam("accessToken") String accessToken, 
 			@QueryParam("fromIndex") int fromIndex,
 			@QueryParam("toIndex") int toIndex) {
 		List<Report> reports = reportBO.getPlaceReports(fromIndex, toIndex);
@@ -34,7 +36,6 @@ public class ReportService {
 	@Path("/place/getone")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getPlaceReports(
-			@QueryParam("accessToken") String accessToken, 
 			@QueryParam("id") int id) {
 		Report report = reportBO.getPlaceReport(id);
 		return Response.status(200).entity(report).build();
@@ -44,7 +45,6 @@ public class ReportService {
 	@Path("/place/quantity")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getPlaceQuantity(
-			@QueryParam("accessToken") String accessToken,
 			@QueryParam("id") int id) {
 		int count = reportBO.getPlaceQuantity(id);
 		PrimitiveType<Integer> integerType = new PrimitiveType<>();
@@ -55,7 +55,7 @@ public class ReportService {
 	@GET
 	@Path("/place/count")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlacesCount(@QueryParam("accessToken") String accessToken) {
+	public Response getPlacesCount() {
 		int count = reportBO.getPlacesCount();
 		PrimitiveType<Integer> integerType = new PrimitiveType<>();
 		integerType.setValue(count);
