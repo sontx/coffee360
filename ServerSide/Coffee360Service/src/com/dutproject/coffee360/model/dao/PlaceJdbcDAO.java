@@ -10,16 +10,9 @@ import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Address;
 import com.dutproject.coffee360.model.bean.Place;
-import com.dutproject.coffee360.model.dao.jdbc.DatabaseManager;
-import com.dutproject.coffee360.model.dao.jdbc.IConnectionProvider;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
-public class PlaceJdbcDAO implements IPlaceProvider {
-	private IConnectionProvider connectionProvider;
-
-	public PlaceJdbcDAO() {
-		connectionProvider = DatabaseManager.getInstance().getConnectionProvider();
-	}
+public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 
 	@Override
 	public ArrayList<Place> getPlaces(double locationLat, double locationLng, double radius) throws Throwable {
@@ -132,17 +125,7 @@ public class PlaceJdbcDAO implements IPlaceProvider {
 
 		return null;
 	}
-
-	private int getLastRowId(Statement statement, String tableName, String idColumnName) throws SQLException {
-		String sql = String.format("SELECT * FROM %s ORDER BY %s DESC LIMIT 1", tableName, idColumnName);
-		ResultSet rs = statement.executeQuery(sql);
-		int id = -1;
-		if (rs.next())
-			id = rs.getInt(idColumnName);
-		rs.close();
-		return id;
-	}
-
+	
 	@Override
 	public synchronized Place addPlace(Place place) throws SQLException {
 		Connection connection = connectionProvider.getConnection();

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.dao.PlaceJdbcDAO;
-import com.dutproject.coffee360.model.dao.PlaceTemplateDAO;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
 public class PlaceBO {
