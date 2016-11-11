@@ -2,7 +2,6 @@ package com.dutproject.coffee360.model.bean;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "useraccount")
 public class UserAccount extends Account {
@@ -12,7 +11,7 @@ public class UserAccount extends Account {
 	private String gender;
 	private int avatarId;
 
-	@XmlTransient
+	@XmlElement
 	public String getAccessToken() {
 		return accessToken;
 	}

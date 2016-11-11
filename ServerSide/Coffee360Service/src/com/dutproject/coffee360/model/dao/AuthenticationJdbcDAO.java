@@ -125,7 +125,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 						 "FROM account INNER JOIN accountpermission " +
 						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
 						 "INNER JOIN useraccount ON useraccount.accountId=account.accountId " +
-						 "WHERE accountId=?";
+						 "WHERE account.accountId=?";
 			prepareStatement = connection.prepareStatement(sql);
 			prepareStatement.setInt(1, accountId);
 			ResultSet resultSet = prepareStatement.executeQuery();

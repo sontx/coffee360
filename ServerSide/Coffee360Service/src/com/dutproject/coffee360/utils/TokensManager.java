@@ -50,6 +50,13 @@ public final class TokensManager {
 				throw new Exception();
 		}
 	}
+	
+	public int getAccountIdByToken(String token) {
+		synchronized (lock) {
+			TokenExtraInfo extraInfo = tokensHolder.get(token);
+			return extraInfo != null ? extraInfo.getAccountId() : -1;
+		}
+	}
 
 	private TokensManager() {
 	}

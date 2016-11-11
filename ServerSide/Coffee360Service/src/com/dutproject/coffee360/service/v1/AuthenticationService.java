@@ -87,6 +87,9 @@ public class AuthenticationService {
 			if (existingAccount == null)
 				existingAccount = authenticationBO.createNewUserAccount(userAccount);
 			
+			String tempAccessToken = authenticationBO.issueToken(existingAccount);
+			existingAccount.setAccessToken(tempAccessToken);
+			
 			return Response.ok().entity(existingAccount).build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,6 +113,7 @@ public class AuthenticationService {
 			return Response.ok(account).build();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
