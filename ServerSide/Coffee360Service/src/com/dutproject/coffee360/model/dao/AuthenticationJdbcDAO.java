@@ -114,4 +114,42 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 		}
 	}
 
+	@Override
+	public UserAccount getUserAccountById(int accountId) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement prepareStatement = null;
+		try {
+			String sql = "SELECT account.accountId, account.username, " +
+						 "accountpermission.permission, " +
+						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender " +
+						 "FROM account INNER JOIN accountpermission " +
+						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
+						 "INNER JOIN useraccount ON useraccount.accountId=account.accountId " +
+						 "WHERE accountId=?";
+			prepareStatement = connection.prepareStatement(sql);
+			prepareStatement.setInt(1, accountId);
+			ResultSet resultSet = prepareStatement.executeQuery();
+			if (resultSet.next()) {
+				UserAccount account = new UserAccount();
+				
+				account.setId(resultSet.getInt("accountId"));
+				String sPermission = resultSet.getString("permission");
+				account.setPermission(Account.getPermissionFromString(sPermission));
+				account.setUserName(resultSet.getString("username"));
+				account.setAddress(resultSet.getString("address"));
+				account.setAvatarId(resultSet.getInt("avatarId"));
+				account.setFullName(resultSet.getString("fullName"));
+				account.setGender(resultSet.getString("gender").equals("f") ? "fimale" : "male");
+				
+				resultSet.close();
+				return account;
+			}
+			resultSet.close();
+			return null;
+		} finally {
+			if (prepareStatement != null)
+				prepareStatement.close();
+		}
+	}
+
 }

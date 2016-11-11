@@ -93,4 +93,24 @@ public class AuthenticationService {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	@GET
+	@Path("/user")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response authenticateUser(@QueryParam("token") String token) {
+		try {
+
+			// Authenticate the user using the credentials provided
+			UserAccount account = authenticationBO.authenticateUser(token);
+
+			if (account == null)
+				throw new Exception();
+
+			return Response.ok(account).build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
 }

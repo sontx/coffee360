@@ -13,4 +13,6 @@ public interface IAuthenticationProvider {
 
 	UserAccount createNewUserAccount(UserAccount newUserAccount) throws SQLException;
 
+	UserAccount getUserAccountById(int accountId) throws SQLException;
+
 }

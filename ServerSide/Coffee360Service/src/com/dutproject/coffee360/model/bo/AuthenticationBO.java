@@ -27,4 +27,10 @@ public class AuthenticationBO {
 		return authenticationDAO.createNewUserAccount(newUserAccount);
 	}
 
+	public UserAccount authenticateUser(String token) throws Exception {
+		TokensManager.getInstance().validateToken(token);
+		int accountId = TokensManager.getInstance().getAccountIdByToken(token);
+		return authenticationDAO.getUserAccountById(accountId);
+	}
+
 }
