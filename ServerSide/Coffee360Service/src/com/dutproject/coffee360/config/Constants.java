@@ -9,6 +9,7 @@ public final class Constants {
 	public static final long EXPIRED_MILLIS = Duration.ofDays(7).toMillis();
 	public static final String OAUTH_FB_APP_ID = "1348420915176737";
 	public static final String OAUTH_FB_APP_SECRET = "cd71aa41b72f993ff2b1a462f33cd08c";
+	public static final String OAUTH_REDIRECT_URI = "http://sontx.no-ip.org:8080/Coffee360Service/rest/v1/auth/oauth";
 		
 	private Constants() {
 	}

@@ -13,7 +13,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.dutproject.coffee360.config.Constants;
 import com.dutproject.coffee360.model.bean.Account;
+import com.dutproject.coffee360.model.bean.UserAccount;
 import com.dutproject.coffee360.model.bo.AuthenticationBO;
 import com.dutproject.coffee360.utils.FacebookOAuth;
 
@@ -43,6 +45,26 @@ public class AuthenticationService {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
+	
+	private String requestAccessToken(String code) throws IOException {
+		String accessToken = FacebookOAuth.getInstance().requestAccessToken(code, Constants.OAUTH_REDIRECT_URI);
+		if (accessToken == null || accessToken.startsWith("{")) {
+			System.out.println(accessToken);
+			throw new IOException();
+		}
+		return accessToken;
+	}
+	
+	private UserAccount createUserAccountFromProfileData(String accessToken, Map<String, String> profileData) {
+		UserAccount userAccount = new UserAccount();
+		userAccount.setAccessToken(accessToken);
+		userAccount.setUserName(profileData.get("email"));
+		userAccount.setPermission(Account.PERMISSION_USER);
+		userAccount.setFullName(profileData.get("name"));
+		userAccount.setAddress(profileData.get("location"));
+		userAccount.setGender(profileData.get("gender"));
+		return userAccount;
+	}
 
 	@GET
 	@Path("/oauth")
@@ -51,16 +73,21 @@ public class AuthenticationService {
 	public Response oauthCallback(@QueryParam("code") String code) {
 		if (code == null || "".equals(code))
 			return Response.status(Response.Status.NO_CONTENT).build();
-		final String redirectUri = "http://sontx.no-ip.org:8080/Coffee360Service/rest/v1/auth/oauth";
 		try {
-			String accessToken = FacebookOAuth.getInstance().requestAccessToken(code, redirectUri);
-			if (accessToken == null || accessToken.startsWith("{")) {
-				System.out.println(accessToken);
-				throw new IOException();
-			}
+			// get user account info from social network
+			String accessToken = requestAccessToken(code);
 			Map<String, String> profileData = FacebookOAuth.getInstance().getProfileData(accessToken);
-			return Response.ok().build();
-		} catch (IOException e) {
+			UserAccount userAccount = createUserAccountFromProfileData(accessToken, profileData);
+			
+			// check account is existing
+			UserAccount existingAccount = authenticationBO.getAccountByUserName(userAccount.getUserName());
+			
+			// create new one if account is not exist
+			if (existingAccount == null)
+				existingAccount = authenticationBO.createNewUserAccount(userAccount);
+			
+			return Response.ok().entity(existingAccount).build();
+		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

@@ -33,15 +33,18 @@ public final class FacebookOAuth {
 	}
 
 	private URL getDataGraphUrl(String accessToken) throws MalformedURLException {
-		String url = "https://graph.facebook.com/me?" + accessToken + "&fields=id,name,email,gender";
+		String url = "https://graph.facebook.com/me?access_token=" + accessToken + "&fields=id,name,email,gender,location";
 		return new URL(url);
 	}
 
 	public String requestAccessToken(String code, String redirectUri) throws IOException {
 		URL facebookUrl = getOAuthGraphUrl(code, redirectUri);
 		String accessToken = ConnectionUtils.getTextFromUrl(facebookUrl);
-		if (accessToken != null && accessToken.endsWith("\n"))
-			return accessToken.substring(0, accessToken.length() - 1);
+		if (accessToken == null)
+			return null;
+		if (accessToken.endsWith("\n"))
+			accessToken = accessToken.substring(0, accessToken.length() - 1);
+		accessToken = accessToken.substring("access_token=".length(), accessToken.indexOf("&expires"));
 		return accessToken;
 	}
 
@@ -51,11 +54,15 @@ public final class FacebookOAuth {
 		Map<String, String> profileData = new HashMap<String, String>();
 		JSONObject json = new JSONObject(graphData);
 		profileData.put("id", json.getString("id"));
-		profileData.put("mame", json.getString("name"));
+		profileData.put("name", json.getString("name"));
 		if (json.has("email"))
 			profileData.put("email", json.getString("email"));
 		if (json.has("gender"))
 			profileData.put("gender", json.getString("gender"));
+		if (json.has("location")) {
+			JSONObject locationObject = json.getJSONObject("location");
+			profileData.put("location", locationObject.getString("name"));
+		}
 		return profileData;
 	}
 }
