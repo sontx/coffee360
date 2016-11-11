@@ -24,6 +24,7 @@ public class AuthenticationService {
 	private AuthenticationBO authenticationBO = new AuthenticationBO();
 
 	@POST
+	@Path("/admin")
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes("application/x-www-form-urlencoded")
 	public Response authenticate(@FormParam("username") String username, @FormParam("password") String password) {
