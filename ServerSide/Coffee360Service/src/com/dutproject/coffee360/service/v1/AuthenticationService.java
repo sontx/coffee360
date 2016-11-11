@@ -27,7 +27,7 @@ public class AuthenticationService {
 	@Path("/admin")
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes("application/x-www-form-urlencoded")
-	public Response authenticate(@FormParam("username") String username, @FormParam("password") String password) {
+	public Response authenticateAdmin(@FormParam("username") String username, @FormParam("password") String password) {
 		try {
 
 			// Authenticate the user using the credentials provided
