@@ -149,12 +149,11 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 			preparedStatement.close();
 			// insert place
 			int addressId = getLastRowId(statement, "address", "addressId");
-			sql = "INSERT INTO place(addressId, description, placeName, thumbnailId) VALUES(?,?,?,?)";
+			sql = "INSERT INTO place(addressId, description, placeName) VALUES(?,?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, addressId);
 			preparedStatement.setString(2, place.getDescription());
 			preparedStatement.setString(3, place.getName());
-			preparedStatement.setInt(4, thumbnailId);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			int placeId = getLastRowId(statement, "place", "placeId");

@@ -152,4 +152,29 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 		}
 	}
 
+	@Override
+	public int getPermissionByAccountId(int accountId) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement prepareStatement = null;
+		try {
+			String sql = "SELECT accountpermission.permission " +
+						 "FROM account INNER JOIN accountpermission " +
+						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
+						 "WHERE account.accountId=?";
+			prepareStatement = connection.prepareStatement(sql);
+			prepareStatement.setInt(1, accountId);
+			ResultSet resultSet = prepareStatement.executeQuery();
+			int permission = Account.PERMISSION_GUEST;
+			if (resultSet.next()) {
+				String spermission = resultSet.getString("permission");
+				permission = "Admin".equals(spermission) ? Account.PERMISSION_ADMIN : ("User".equals(spermission) ? Account.PERMISSION_USER : Account.PERMISSION_GUEST);
+			}
+			resultSet.close();
+			return permission;
+		} finally {
+			if (prepareStatement != null)
+				prepareStatement.close();
+		}
+	}
+
 }

@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bo.PlaceBO;
+import com.dutproject.coffee360.service.Role;
+import com.dutproject.coffee360.service.Secured;
 
 @Path("/v1/place")
 public class PlaceService {
@@ -26,9 +28,8 @@ public class PlaceService {
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Response addPlace(
-			@QueryParam("accessToken") String accessToken, 
-			Place place) {
+	@Secured({ Role.ROLE_USER })
+	public Response addPlace(Place place) {
 		Place result = placeBO.addPlace(place);
 		return Response.status(200).entity(result).build();
 	}
@@ -36,12 +37,11 @@ public class PlaceService {
 	@GET
 	@Path("/get")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlaces(
-			@QueryParam("latitude") double locationLat,
-			@QueryParam("longitude") double locationLng,
+	public Response getPlaces(@QueryParam("latitude") double locationLat, @QueryParam("longitude") double locationLng,
 			@QueryParam("radius") double radius) {
 		ArrayList<Place> places = placeBO.getPlaces(locationLat, locationLng, radius);
-		GenericEntity<ArrayList<Place>> entity = new GenericEntity<ArrayList<Place>>(places) {};
+		GenericEntity<ArrayList<Place>> entity = new GenericEntity<ArrayList<Place>>(places) {
+		};
 		return Response.status(200).entity(entity).build();
 	}
 
@@ -52,13 +52,12 @@ public class PlaceService {
 		Place place = placeBO.getPlace(id);
 		return Response.status(200).entity(place).build();
 	}
-	
+
 	@DELETE
 	@Path("/del")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response deletePlace(
-			@QueryParam("accessToken") String accessToken, 
-			@QueryParam("id") int id) {
+	@Secured({ Role.ROLE_USER })
+	public Response deletePlace(@QueryParam("id") int id) {
 		boolean result = placeBO.deletePlace(id);
 		PrimitiveType<Boolean> booleanType = new PrimitiveType<>();
 		booleanType.setValue(result);

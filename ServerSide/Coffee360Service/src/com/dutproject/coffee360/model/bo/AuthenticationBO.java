@@ -33,4 +33,8 @@ public class AuthenticationBO {
 		return authenticationDAO.getUserAccountById(accountId);
 	}
 
+	public int getPermissionByAccountId(int accountId) throws SQLException {
+		return authenticationDAO.getPermissionByAccountId(accountId);
+	}
+
 }

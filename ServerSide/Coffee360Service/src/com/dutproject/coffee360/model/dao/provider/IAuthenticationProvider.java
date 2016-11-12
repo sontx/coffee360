@@ -15,4 +15,6 @@ public interface IAuthenticationProvider {
 
 	UserAccount getUserAccountById(int accountId) throws SQLException;
 
+	int getPermissionByAccountId(int accountId) throws SQLException;
+
 }

@@ -14,6 +14,8 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import com.dutproject.coffee360.model.bean.Account;
 import com.dutproject.coffee360.model.bean.UploadedPhoto;
 import com.dutproject.coffee360.model.bo.PhotoBO;
+import com.dutproject.coffee360.service.Role;
+import com.dutproject.coffee360.service.Secured;
 
 @Path("/v1/photo")
 public class PhotoService {
@@ -22,6 +24,7 @@ public class PhotoService {
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Secured({ Role.ROLE_USER })
 	public Response uploadPhoto(@FormDataParam("photo") InputStream in,
 			@FormDataParam("photo") FormDataContentDisposition detail) {
 		Account account = new Account();
