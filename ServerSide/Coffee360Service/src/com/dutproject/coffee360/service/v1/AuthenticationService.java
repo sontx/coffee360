@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import com.dutproject.coffee360.config.Constants;
 import com.dutproject.coffee360.model.bean.Account;
+import com.dutproject.coffee360.model.bean.Credentials;
 import com.dutproject.coffee360.model.bean.UserAccount;
 import com.dutproject.coffee360.model.bo.AuthenticationBO;
 import com.dutproject.coffee360.utils.FacebookOAuth;
@@ -26,12 +26,12 @@ public class AuthenticationService {
 	@POST
 	@Path("/admin")
 	@Produces(MediaType.APPLICATION_XML)
-	@Consumes("application/x-www-form-urlencoded")
-	public Response authenticateAdmin(@FormParam("username") String username, @FormParam("password") String password) {
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response authenticateAdmin(Credentials credentials) {
 		try {
 
 			// Authenticate the user using the credentials provided
-			Account account = authenticationBO.authenticateAdmin(username, password);
+			Account account = authenticationBO.authenticateAdmin(credentials.getUsername(), credentials.getPassword());
 
 			if (account == null)
 				throw new Exception();
