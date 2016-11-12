@@ -1,17 +1,17 @@
 package com.dutproject.coffee360.model.dao.provider;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.Report;
 
 public interface IReportProvider {
-	List<Report> getPlaceReports(int fromIndex, int toIndex);
+	List<PlaceReport> getPlaceReports(int fromIndex, int toIndex) throws SQLException;
 
-	int getPlacesCount();
+	int getPlacesCount() throws SQLException;
 
-	boolean deletePlace(int id);
+	Report getPlaceReport(int id) throws SQLException;
 
-	Report getPlaceReport(int id);
-
-	int getPlaceQuantity(int id);
+	int getPlaceQuantity(int id) throws SQLException;
 }

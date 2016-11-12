@@ -1,5 +1,6 @@
 package com.dutproject.coffee360.service.v1;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bo.ReportBO;
@@ -27,18 +29,29 @@ public class ReportService {
 	public Response getPlaceReports(
 			@QueryParam("fromIndex") int fromIndex,
 			@QueryParam("toIndex") int toIndex) {
-		List<Report> reports = reportBO.getPlaceReports(fromIndex, toIndex);
-		GenericEntity<List<Report>> entity = new GenericEntity<List<Report>>(reports) {};
-		return Response.status(200).entity(entity).build();
+		List<PlaceReport> reports;
+		try {
+			reports = reportBO.getPlaceReports(fromIndex, toIndex);
+			GenericEntity<List<PlaceReport>> entity = new GenericEntity<List<PlaceReport>>(reports) {};
+			return Response.status(200).entity(entity).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	@GET
 	@Path("/place/getone")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlaceReports(
+	public Response getPlaceReport(
 			@QueryParam("id") int id) {
-		Report report = reportBO.getPlaceReport(id);
-		return Response.status(200).entity(report).build();
+		try {
+			Report report = reportBO.getPlaceReport(id);
+			return Response.status(200).entity(report).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	@GET
@@ -46,19 +59,29 @@ public class ReportService {
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getPlaceQuantity(
 			@QueryParam("id") int id) {
-		int count = reportBO.getPlaceQuantity(id);
-		PrimitiveType<Integer> integerType = new PrimitiveType<>();
-		integerType.setValue(count);
-		return Response.status(200).entity(integerType).build();
+		try {
+			int count = reportBO.getPlaceQuantity(id);
+			PrimitiveType<Integer> integerType = new PrimitiveType<>();
+			integerType.setValue(count);
+			return Response.status(200).entity(integerType).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@GET
 	@Path("/place/count")
 	@Produces(MediaType.APPLICATION_XML)
-	public Response getPlacesCount() {
-		int count = reportBO.getPlacesCount();
-		PrimitiveType<Integer> integerType = new PrimitiveType<>();
-		integerType.setValue(count);
-		return Response.status(200).entity(integerType).build();
+	public Response getPlacesCount() {		
+		try {
+			int count = reportBO.getPlacesCount();
+			PrimitiveType<Integer> integerType = new PrimitiveType<>();
+			integerType.setValue(count);
+			return Response.status(200).entity(integerType).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}	
 }

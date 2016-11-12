@@ -1,5 +1,7 @@
 package com.dutproject.coffee360.model.bean;
 
+import java.sql.Timestamp;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -7,10 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Report {
 	private int id;
 	private int accountId;
-	private int placeId;
 	private String caption;
-	private String dateTime;
-
+	private Timestamp dateTime;
+	private ReportState state;
+	
 	public int getId() {
 		return id;
 	}
@@ -29,15 +31,6 @@ public class Report {
 		this.accountId = accountId;
 	}
 
-	public int getPlaceId() {
-		return placeId;
-	}
-
-	@XmlElement
-	public void setPlaceId(int placeId) {
-		this.placeId = placeId;
-	}
-
 	public String getCaption() {
 		return caption;
 	}
@@ -47,12 +40,19 @@ public class Report {
 		this.caption = caption;
 	}
 
-	public String getDateTime() {
+	public Timestamp getDateTime() {
 		return dateTime;
 	}
 
-	@XmlElement
-	public void setDateTime(String dateTime) {
+	public void setDateTime(Timestamp dateTime) {
 		this.dateTime = dateTime;
+	}
+
+	public ReportState getState() {
+		return state;
+	}
+
+	public void setState(ReportState state) {
+		this.state = state;
 	}
 }
