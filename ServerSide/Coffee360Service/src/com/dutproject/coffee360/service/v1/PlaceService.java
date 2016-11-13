@@ -1,11 +1,13 @@
 package com.dutproject.coffee360.service.v1;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -62,5 +64,20 @@ public class PlaceService {
 		PrimitiveType<Boolean> booleanType = new PrimitiveType<>();
 		booleanType.setValue(result);
 		return Response.status(200).entity(booleanType).build();
+	}
+	
+	@PUT
+	@Path("update")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	@Secured({ Role.ROLE_USER, Role.ROLE_ADMIN })
+	public Response updatePlace(Place place) {
+		try {
+			Place result = placeBO.updatePlace(place);
+			return Response.ok(result).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 }

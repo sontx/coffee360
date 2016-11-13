@@ -214,4 +214,41 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 		return true;
 	}
 
+	@Override
+	public Place updatePlace(Place place) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {//update address,place set address.addressName='dddd' where address.addressId=place.placeId and place.placeId=3
+			String sql = "UPDATE address, place SET addressName=? " +
+						 "WHERE place.addressId=address.addressId AND place.placeId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, place.getAddress().getName());
+			preparedStatement.setInt(2, place.getId());
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			
+			sql = "UPDATE googlemapscoordinates, address, place SET locationLatitude=?, locationLongitude=? " +
+				  "WHERE googlemapscoordinates.googleMapsCoordinatesId=address.googleMapsCoordinatesId AND place.addressId=address.addressId AND place.placeId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setDouble(1, place.getAddress().getLocationLat());
+			preparedStatement.setDouble(2, place.getAddress().getLocationLng());
+			preparedStatement.setInt(3, place.getId());
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			
+			sql = "UPDATE place SET placeName=?, description=? " +
+				  "WHERE place.placeId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, place.getName());
+			preparedStatement.setString(2, place.getDescription());
+			preparedStatement.setInt(3, place.getId());
+			preparedStatement.executeUpdate();
+			
+			return place;
+		} finally {
+			if (preparedStatement != null)
+				preparedStatement.close();
+		}
+	}
+
 }

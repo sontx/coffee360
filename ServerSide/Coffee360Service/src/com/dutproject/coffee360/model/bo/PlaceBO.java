@@ -50,4 +50,8 @@ public class PlaceBO {
 		return false;
 	}
 
+	public Place updatePlace(Place place) throws SQLException {
+		return placeDAO.updatePlace(place);
+	}
+
 }
