@@ -59,6 +59,14 @@ public final class TokensManager {
 	}
 
 	private TokensManager() {
+		TokenExtraInfo extraInfo = new TokenExtraInfo();
+		extraInfo.setAccountId(12);
+		synchronized (lock) {
+			tokensHolder.put("temptoken", extraInfo);
+			extraInfo = new TokenExtraInfo();
+			extraInfo.setAccountId(2);
+			tokensHolder.put("sonsapdeptrai", extraInfo);
+		}
 	}
 
 	private class TokenExtraInfo {
