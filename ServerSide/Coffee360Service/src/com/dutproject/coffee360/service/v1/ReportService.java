@@ -84,4 +84,17 @@ public class ReportService {
 		}
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}	
+
+	@GET
+	@Path("/place/state")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response setPlaceReportState(@QueryParam("id") int id, @QueryParam("state") String state) {
+		try {
+			reportBO.setPlaceReportState(id, state);
+			return Response.ok().build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
 }

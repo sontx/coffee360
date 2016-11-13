@@ -1,6 +1,7 @@
 package com.dutproject.coffee360.model.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -105,6 +106,22 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 		} finally {
 			if (statement != null)
 				statement.close();
+		}
+	}
+
+	@Override
+	public void setPlaceReportState(int id, String state) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = "UPDATE report SET state=? WHERE reportId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, state);
+			preparedStatement.setInt(2, id);
+			preparedStatement.executeUpdate();
+		} finally {
+			if (preparedStatement != null)
+				preparedStatement.close();
 		}
 	}
 

@@ -26,4 +26,8 @@ public class ReportBO {
 	public int getPlaceQuantity(int id) throws SQLException {
 		return reportProvider.getPlaceQuantity(id);
 	}
+
+	public void setPlaceReportState(int id, String state) throws SQLException {
+		reportProvider.setPlaceReportState(id, state);		
+	}
 }

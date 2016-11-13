@@ -14,4 +14,6 @@ public interface IReportProvider {
 	Report getPlaceReport(int id) throws SQLException;
 
 	int getPlaceQuantity(int id) throws SQLException;
+
+	void setPlaceReportState(int id, String state) throws SQLException;
 }
