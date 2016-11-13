@@ -1,4 +1,4 @@
-package com.dutproject.coffee360admin.controller;
+package com.dutproject.coffee360admin.controller.login;
 
 import java.io.IOException;
 
@@ -7,17 +7,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class AdminLoginFormServlet
- */
+import com.dutproject.coffee360admin.controller.BaseServlet;
+import com.dutproject.coffee360admin.controller.Urls;
+
 @WebServlet("/Login")
 public class LoginFormServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doWork(HttpServletRequest request, HttpServletResponse response)
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		AdminServletHelper.gotoLoginPage(response);
+		response.sendRedirect(Urls.LOGIN_FORM);
 	}
 
 }

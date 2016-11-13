@@ -1,5 +1,5 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.dutproject.coffee360admin.model.bean.CoffeeShopReport"%>
+<%@page import="com.dutproject.coffee360admin.model.bean.ShopReport"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -37,25 +37,22 @@ table, th, td {
 		
 		<!-- table datas -->
 		<%
-			ArrayList<CoffeeShopReport> listCoffeeShopReports = (ArrayList<CoffeeShopReport>)request.getAttribute("listCoffeeShopReports");
+			ArrayList<ShopReport> listCoffeeShopReports = (ArrayList<ShopReport>)request.getAttribute("listCoffeeShopReports");
 			int index = 1;
-			for (CoffeeShopReport report : listCoffeeShopReports) {
+			for (ShopReport report : listCoffeeShopReports) {
 		%>
 		<tr>
-			<td><%=index %></td>
+			<td><%=index++ %></td>
 			<td><%=report.getPlaceName() %></td>
 			<td><%=report.getDescription() %></td>
 			<td><%=report.getQuantity() %></td>
 			<td>
-				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm">edit</a>
+				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm?id=<%=report.getId() %>">edit</a>
 				<a href="<%=request.getContextPath() %>/DeleteCoffeeShopReport?id=<%=report.getId() %>"  onclick="return confirm('Are you sure?')">delete</a>
 				<a href="<%=request.getContextPath() %>/IgnoreCoffeeShopReport?id=<%=report.getId() %>" onclick="return confirm('Are you sure?')">ignore</a>
 			</td>
 		</tr>
-		<%	
-			index++;
-			}
-		%>
+		<%	} %>
 	</table>
 	
 	<!-- pagination -->
@@ -63,6 +60,9 @@ table, th, td {
 		int pageNumber = (Integer) request.getAttribute("pageNumber");
 		int maxPageNumber = (Integer) request.getAttribute("maxPageNumber");
 		int previousPageNumber = pageNumber - 1;
+		if (previousPageNumber <= 0) {
+			previousPageNumber = 1;
+		}
 		int nextPageNumber = pageNumber + 1;
 		if (nextPageNumber > maxPageNumber) {
 			nextPageNumber = maxPageNumber;

@@ -1,10 +1,19 @@
 package com.dutproject.coffee360admin.model.bean;
 
-public class CoffeeShopReport {
+public class ShopReport {
 	private int id;
 	private String placeName;
 	private String description;
 	private int quantity;
+	
+	public ShopReport() {}
+	
+	public ShopReport(int reportId, String placeName, String description, int quantity) {
+		setId(reportId);
+		setPlaceName(placeName);
+		setDescription(description);
+		setQuantity(quantity);
+	}
 
 	public int getId() {
 		return id;

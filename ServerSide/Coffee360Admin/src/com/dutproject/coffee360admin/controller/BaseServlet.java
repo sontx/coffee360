@@ -6,24 +6,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class AdminServlet
- */
 public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public BaseServlet() {
-        super();
-    }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doWork(request, response);
+		processRequest(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doWork(request, response);
+		processRequest(request, response);
 	}
-	
-	protected abstract void doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-	
+
+	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
 }

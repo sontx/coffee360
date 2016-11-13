@@ -28,7 +28,7 @@ function onPageLoaded() {
 <center>
 	<h1><span id="header"></span></h1>
 
-	<form method="post" action="../Home" onsubmit="return validateForm()">
+	<form method="post" action="<%=request.getContextPath() %>/Home" onsubmit="return validateForm()">
 		<input type="text" name="username" id="username" placeholder=USERNAME_INPUT_PLACEHOLDER>
 		<br>
 		<input type="password" name="password" id="password">
