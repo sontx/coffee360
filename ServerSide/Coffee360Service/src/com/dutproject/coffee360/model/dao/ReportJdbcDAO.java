@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dutproject.coffee360.model.bean.PhotoReport;
 import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bean.ReportState;
@@ -122,6 +124,36 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 		} finally {
 			if (preparedStatement != null)
 				preparedStatement.close();
+		}
+	}
+
+	@Override
+	public List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = String
+					.format("SELECT report.reportId, report.userAccountId, report.message, report.dateTime, report.state, "
+							+ "photoreport.uploadedPhotoId "
+							+ "FROM report INNER JOIN photoreport ON report.reportId=photoreport.reportId "
+							+ "LIMIT %d OFFSET %d", fromIndex + toIndex + 1, fromIndex);
+			ResultSet resultSet = statement.executeQuery(sql);
+			List<PhotoReport> reports = new ArrayList<>();
+			while (resultSet.next()) {
+				PhotoReport report = new PhotoReport();
+				report.setId(resultSet.getInt("reportId"));
+				report.setAccountId(resultSet.getInt("userAccountId"));
+				report.setCaption(resultSet.getString("message"));
+				report.setDateTime(resultSet.getTimestamp("dateTime"));
+				report.setState(ReportState.valueOf(resultSet.getString("state")));
+				report.setUploadedPhotoId(resultSet.getInt("uploadedPhotoId"));
+				reports.add(report);
+			}
+			return reports;
+		} finally {
+			if (statement != null)
+				statement.close();
 		}
 	}
 

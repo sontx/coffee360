@@ -11,6 +11,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.dutproject.coffee360.model.bean.PhotoReport;
 import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.Report;
@@ -92,6 +93,24 @@ public class ReportService {
 		try {
 			reportBO.setPlaceReportState(id, state);
 			return Response.ok().build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	/** ------------------------------- photo ------------------------------------ */
+	
+	@GET
+	@Path("/photo/get")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPhotoReports(
+			@QueryParam("fromIndex") int fromIndex,
+			@QueryParam("toIndex") int toIndex) {
+		try {
+			List<PhotoReport> reports = reportBO.getPhotoReports(fromIndex, toIndex);
+			GenericEntity<List<PhotoReport>> entity = new GenericEntity<List<PhotoReport>>(reports) {};
+			return Response.status(200).entity(entity).build();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

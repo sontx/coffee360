@@ -3,6 +3,7 @@ package com.dutproject.coffee360.model.dao.provider;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.dutproject.coffee360.model.bean.PhotoReport;
 import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.Report;
 
@@ -16,4 +17,6 @@ public interface IReportProvider {
 	int getPlaceQuantity(int id) throws SQLException;
 
 	void setPlaceReportState(int id, String state) throws SQLException;
+
+	List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException;
 }

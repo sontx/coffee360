@@ -3,6 +3,7 @@ package com.dutproject.coffee360.model.bo;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.dutproject.coffee360.model.bean.PhotoReport;
 import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.dao.ReportJdbcDAO;
@@ -29,5 +30,9 @@ public class ReportBO {
 
 	public void setPlaceReportState(int id, String state) throws SQLException {
 		reportProvider.setPlaceReportState(id, state);		
+	}
+
+	public List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException {
+		return reportProvider.getPhotoReports(fromIndex, toIndex);
 	}
 }
