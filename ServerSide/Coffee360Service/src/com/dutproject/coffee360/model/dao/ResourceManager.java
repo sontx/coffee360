@@ -1,6 +1,8 @@
 package com.dutproject.coffee360.model.dao;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +41,11 @@ public final class ResourceManager {
 	
 	public File writePhoto(InputStream in,String fileName) throws IOException {
 		return writeToFile(in, photoResourceDir, fileName);
+	}
+	
+	public InputStream getPhotoInputStream(String baseFileName) throws FileNotFoundException {
+		File file = new File(baseFileName);
+		return new FileInputStream(file);
 	}
 	
 	private ResourceManager() {

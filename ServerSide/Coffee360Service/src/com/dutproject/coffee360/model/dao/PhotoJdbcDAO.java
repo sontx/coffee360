@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -41,19 +42,39 @@ public class PhotoJdbcDAO extends JdbcBaseDAO implements IPhotoProvider {
 			uploadedPhoto.setDateTime(now);
 			uploadedPhoto.setId(uploadedPhotoId);
 			uploadedPhoto.setUserAccountId(accountId);
-			
+
 			sql = "INSERT INTO placephoto(placeId, uploadedPhotoId) VALUES(?,?)";
 			prepareStatement = connection.prepareStatement(sql);
 			prepareStatement.setInt(1, placeId);
 			prepareStatement.setInt(2, uploadedPhotoId);
 			prepareStatement.executeUpdate();
-			
+
 			return uploadedPhoto;
 		} finally {
 			if (prepareStatement != null)
 				prepareStatement.close();
 			if (statement != null)
 				statement.close();
+		}
+	}
+
+	@Override
+	public String getImageDataUrlById(int id) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement prepareStatement = null;
+		try {
+			String sql = "SELECT dataUrl FROM uploadedphoto WHERE uploadedPhotoId=?";
+			prepareStatement = connection.prepareStatement(sql);
+			prepareStatement.setInt(1, id);
+			ResultSet rs = prepareStatement.executeQuery();
+			String dataUrl = null;
+			if (rs.next())
+				dataUrl = rs.getString(1);
+			rs.close();
+			return dataUrl;
+		} finally {
+			if (prepareStatement != null)
+				prepareStatement.close();
 		}
 	}
 

@@ -8,4 +8,6 @@ import com.dutproject.coffee360.model.bean.UploadedPhoto;
 
 public interface IPhotoProvider {
 	UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId) throws IOException, SQLException;
+
+	String getImageDataUrlById(int id) throws SQLException;
 }

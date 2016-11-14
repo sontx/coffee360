@@ -1,5 +1,6 @@
 package com.dutproject.coffee360.model.bo;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -7,6 +8,7 @@ import java.util.Calendar;
 
 import com.dutproject.coffee360.model.bean.UploadedPhoto;
 import com.dutproject.coffee360.model.dao.PhotoJdbcDAO;
+import com.dutproject.coffee360.model.dao.ResourceManager;
 import com.dutproject.coffee360.model.dao.provider.IPhotoProvider;
 import com.dutproject.coffee360.utils.SecuredTokenFactory;
 
@@ -39,6 +41,16 @@ public class PhotoBO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public InputStream getImageInputStream(int id) throws SQLException {
+		String dataUrl = photoDAO.getImageDataUrlById(id);
+		try {
+			return ResourceManager.getInstance().getPhotoInputStream(dataUrl);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
