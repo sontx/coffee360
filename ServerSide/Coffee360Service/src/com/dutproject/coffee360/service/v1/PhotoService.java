@@ -27,7 +27,7 @@ public class PhotoService extends BaseService {
 	@Path("/place/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Secured({ Role.ROLE_USER })
-	public Response uploadPhoto(@FormDataParam("photo") InputStream in,
+	public Response uploadPlacePhoto(@FormDataParam("photo") InputStream in,
 			@FormDataParam("photo") FormDataContentDisposition detail,
 			@QueryParam("placeId") int placeId,
 			@Context SecurityContext securityContext) {
