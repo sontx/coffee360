@@ -21,4 +21,6 @@ public interface IReportProvider {
 	List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException;
 
 	Report getPhotoReport(int id) throws SQLException;
+
+	int getPhotoQuantity(int id) throws SQLException;
 }
