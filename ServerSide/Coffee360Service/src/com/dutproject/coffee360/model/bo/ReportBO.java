@@ -35,4 +35,8 @@ public class ReportBO {
 	public List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException {
 		return reportProvider.getPhotoReports(fromIndex, toIndex);
 	}
+
+	public Report getPhotoReport(int id) throws SQLException {
+		return reportProvider.getPhotoReport(id);
+	}
 }

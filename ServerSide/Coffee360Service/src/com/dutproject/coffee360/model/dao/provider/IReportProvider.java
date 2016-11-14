@@ -19,4 +19,6 @@ public interface IReportProvider {
 	void setPlaceReportState(int id, String state) throws SQLException;
 
 	List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException;
+
+	Report getPhotoReport(int id) throws SQLException;
 }

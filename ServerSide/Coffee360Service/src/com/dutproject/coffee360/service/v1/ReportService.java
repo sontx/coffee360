@@ -116,4 +116,18 @@ public class ReportService {
 		}
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
+	
+	@GET
+	@Path("/photo/getone")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPhotoReport(
+			@QueryParam("id") int id) {
+		try {
+			Report report = reportBO.getPhotoReport(id);
+			return Response.status(200).entity(report).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
 }

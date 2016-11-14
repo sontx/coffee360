@@ -157,4 +157,33 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 		}
 	}
 
+	@Override
+	public Report getPhotoReport(int id) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = String
+					.format("SELECT report.reportId, report.userAccountId, report.message, report.dateTime, report.state, "
+							+ "photoreport.uploadedPhotoId "
+							+ "FROM report INNER JOIN photoreport ON report.reportId=photoreport.reportId "
+							+ "WHERE report.reportId=%d", id);
+			ResultSet resultSet = statement.executeQuery(sql);
+			if (resultSet.next()) {
+				PhotoReport report = new PhotoReport();
+				report.setId(resultSet.getInt("reportId"));
+				report.setAccountId(resultSet.getInt("userAccountId"));
+				report.setCaption(resultSet.getString("message"));
+				report.setDateTime(resultSet.getTimestamp("dateTime"));
+				report.setState(ReportState.valueOf(resultSet.getString("state")));
+				report.setUploadedPhotoId(resultSet.getInt("uploadedPhotoId"));
+				return report;
+			}
+			return null;
+		} finally {
+			if (statement != null)
+				statement.close();
+		}
+	}
+
 }
