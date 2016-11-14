@@ -9,20 +9,19 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-import com.dutproject.coffee360.model.bean.Account;
 import com.dutproject.coffee360.model.bean.UploadedPhoto;
 import com.dutproject.coffee360.model.dao.provider.IPhotoProvider;
 
 public class PhotoJdbcDAO extends JdbcBaseDAO implements IPhotoProvider {
 
 	@Override
-	public UploadedPhoto uploadPhoto(Account account, InputStream in, String fileName)
+	public UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId)
 			throws IOException, SQLException {
 		String dataUrl = ResourceManager.getInstance().writePhoto(in, fileName).getPath();
 		Calendar calendar = Calendar.getInstance();
 		Timestamp now = new Timestamp(calendar.getTimeInMillis());
 
-		String sql = "INSERT INTO uploadedphoto(dataUrl, dateTime, userAccountId) VALUES(?,?,?)";
+		String sql = "INSERT INTO uploadedphoto(dataUrl, dateTime, accountId) VALUES(?,?,?)";
 		Connection connection = connectionProvider.getConnection();
 		PreparedStatement prepareStatement = null;
 		Statement statement = null;
@@ -30,8 +29,9 @@ public class PhotoJdbcDAO extends JdbcBaseDAO implements IPhotoProvider {
 			prepareStatement = connection.prepareStatement(sql);
 			prepareStatement.setString(1, dataUrl);
 			prepareStatement.setObject(2, now);
-			prepareStatement.setInt(3, account.getId());
+			prepareStatement.setInt(3, accountId);
 			prepareStatement.executeUpdate();
+			prepareStatement.close();
 
 			statement = connection.createStatement();
 			int uploadedPhotoId = getLastRowId(statement, "uploadedphoto", "uploadedPhotoId");
@@ -40,7 +40,14 @@ public class PhotoJdbcDAO extends JdbcBaseDAO implements IPhotoProvider {
 			uploadedPhoto.setDataUrl(dataUrl);
 			uploadedPhoto.setDateTime(now);
 			uploadedPhoto.setId(uploadedPhotoId);
-			uploadedPhoto.setUserAccountId(account.getId());
+			uploadedPhoto.setUserAccountId(accountId);
+			
+			sql = "INSERT INTO placephoto(placeId, uploadedPhotoId) VALUES(?,?)";
+			prepareStatement = connection.prepareStatement(sql);
+			prepareStatement.setInt(1, placeId);
+			prepareStatement.setInt(2, uploadedPhotoId);
+			prepareStatement.executeUpdate();
+			
 			return uploadedPhoto;
 		} finally {
 			if (prepareStatement != null)
