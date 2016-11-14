@@ -146,4 +146,19 @@ public class ReportService {
 		}
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
+	
+	@GET
+	@Path("/photo/count")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPhotosCount() {		
+		try {
+			int count = reportBO.getPhotosCount();
+			PrimitiveType<Integer> integerType = new PrimitiveType<>();
+			integerType.setValue(count);
+			return Response.status(200).entity(integerType).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}	
 }

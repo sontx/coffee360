@@ -23,4 +23,6 @@ public interface IReportProvider {
 	Report getPhotoReport(int id) throws SQLException;
 
 	int getPhotoQuantity(int id) throws SQLException;
+
+	int getPhotosCount() throws SQLException;
 }

@@ -205,4 +205,22 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 		}
 	}
 
+	@Override
+	public int getPhotosCount() throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = "SELECT COUNT(*) FROM photoreport";
+			ResultSet resultSet = statement.executeQuery(sql);
+			int placesCount = 0;
+			if (resultSet.next())
+				placesCount = resultSet.getInt(1);
+			return placesCount;
+		} finally {
+			if (statement != null)
+				statement.close();
+		}
+	}
+
 }

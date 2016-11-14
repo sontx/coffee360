@@ -43,4 +43,8 @@ public class ReportBO {
 	public int getPhotoQuantity(int id) throws SQLException {
 		return reportProvider.getPhotoQuantity(id);
 	}
+
+	public int getPhotosCount() throws SQLException {
+		return reportProvider.getPhotosCount();
+	}
 }
