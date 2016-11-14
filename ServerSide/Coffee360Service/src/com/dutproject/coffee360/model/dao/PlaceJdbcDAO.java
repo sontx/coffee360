@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Address;
 import com.dutproject.coffee360.model.bean.Place;
+import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
 public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
@@ -245,6 +247,29 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 			preparedStatement.executeUpdate();
 			
 			return place;
+		} finally {
+			if (preparedStatement != null)
+				preparedStatement.close();
+		}
+	}
+
+	@Override
+	public ArrayList<XmlInteger> getPlacePhotos(int id) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = "SELECT uploadedPhotoId FROM placephoto WHERE placeId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			ResultSet rs = preparedStatement.executeQuery();
+			ArrayList<XmlInteger> primitiveTypes = new ArrayList<>();
+			while (rs.next()) {
+				XmlInteger primitiveType = new XmlInteger();
+				primitiveType.setValue(rs.getInt(1));
+				primitiveTypes.add(primitiveType);
+			}
+			rs.close();
+			return primitiveTypes;
 		} finally {
 			if (preparedStatement != null)
 				preparedStatement.close();

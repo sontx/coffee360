@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.bo.PlaceBO;
 import com.dutproject.coffee360.service.Role;
 import com.dutproject.coffee360.service.Secured;
@@ -75,6 +76,21 @@ public class PlaceService {
 		try {
 			Place result = placeBO.updatePlace(place);
 			return Response.ok(result).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@GET
+	@Path("photos")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getPlacePhotos(@QueryParam("id") int id) {
+		try {
+			ArrayList<XmlInteger> result = placeBO.getPlacePhotos(id);
+			GenericEntity<ArrayList<XmlInteger>> entity = new GenericEntity<ArrayList<XmlInteger>>(result) {
+			};
+			return Response.ok(entity).build();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

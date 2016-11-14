@@ -2,8 +2,11 @@ package com.dutproject.coffee360.model.bo;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Place;
+import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.dao.PlaceJdbcDAO;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
@@ -52,6 +55,10 @@ public class PlaceBO {
 
 	public Place updatePlace(Place place) throws SQLException {
 		return placeDAO.updatePlace(place);
+	}
+
+	public ArrayList<XmlInteger> getPlacePhotos(int id) throws SQLException {
+		return placeDAO.getPlacePhotos(id);
 	}
 
 }
