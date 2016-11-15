@@ -9,15 +9,13 @@ import javax.ws.rs.core.Response;
 import com.dutproject.coffee360admin.model.bean.AdminAccount;
 
 public class AdminAccountDAO extends BaseDAO {
-	private static final String PATH = "/Coffee360Service/rest/v1/auth";
-	private static final String AUTH_URL = String.format("http://%s%s", AUTHORITY, PATH);
+	private static final String PATH = getPath("Coffee360Service/rest/v1/auth");
 	private static String ACCESS_TOKEN = null;
+	private Client client = ClientBuilder.newClient();
 
 	public boolean isValidAccount(AdminAccount account) {
-		Client client = ClientBuilder.newClient();
-		
 		Response response = client
-			.target(AUTH_URL)
+			.target(PATH)
 			.path("/admin")
 			.request(MediaType.APPLICATION_XML)
 			.post(Entity.entity(account, MediaType.APPLICATION_XML));
@@ -27,7 +25,6 @@ public class AdminAccountDAO extends BaseDAO {
 			saveAccessToken(accessToken);
 			return true;
 		}
-		
 		return false;
 	}
 

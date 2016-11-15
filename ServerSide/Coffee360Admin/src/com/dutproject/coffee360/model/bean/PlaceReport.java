@@ -4,8 +4,8 @@ package com.dutproject.coffee360.model.bean;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "report")
-public class Report {
+@XmlRootElement(name = "placeReport")
+public class PlaceReport {
 	private int id;
 	private int accountId;
 	private int placeId;

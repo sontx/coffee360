@@ -1,26 +1,30 @@
 package com.dutproject.coffee360admin.model.bean;
 
-public class ShopReport {
-	private int id;
+import com.dutproject.coffee360.model.bean.Place;
+import com.dutproject.coffee360.model.bean.PlaceReport;
+
+public class PlaceReportDetails {
+	private int reportId;
 	private String placeName;
 	private String description;
 	private int quantity;
-	
-	public ShopReport() {}
-	
-	public ShopReport(int reportId, String placeName, String description, int quantity) {
-		setId(reportId);
-		setPlaceName(placeName);
-		setDescription(description);
-		setQuantity(quantity);
+
+	public PlaceReportDetails(
+			PlaceReport placeReport,
+			Place place,
+			int reportQuantity) {
+		reportId = placeReport.getId();
+		placeName = place.getName();
+		description = place.getDescription();
+		quantity = reportQuantity;
 	}
 
-	public int getId() {
-		return id;
+	public int getReportId() {
+		return reportId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setReportId(int id) {
+		this.reportId = id;
 	}
 
 	public String getPlaceName() {

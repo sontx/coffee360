@@ -1,5 +1,5 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.dutproject.coffee360admin.model.bean.ShopReport"%>
+<%@page import="com.dutproject.coffee360admin.model.bean.PlaceReportDetails"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -37,9 +37,9 @@ table, th, td {
 		
 		<!-- table datas -->
 		<%
-			ArrayList<ShopReport> listCoffeeShopReports = (ArrayList<ShopReport>)request.getAttribute("listCoffeeShopReports");
+			ArrayList<PlaceReportDetails> listCoffeeShopReports = (ArrayList<PlaceReportDetails>)request.getAttribute("listCoffeeShopReports");
 			int index = 1;
-			for (ShopReport report : listCoffeeShopReports) {
+			for (PlaceReportDetails report : listCoffeeShopReports) {
 		%>
 		<tr>
 			<td><%=index++ %></td>
@@ -47,9 +47,9 @@ table, th, td {
 			<td><%=report.getDescription() %></td>
 			<td><%=report.getQuantity() %></td>
 			<td>
-				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm?id=<%=report.getId() %>">edit</a>
-				<a href="<%=request.getContextPath() %>/DeleteCoffeeShopReport?id=<%=report.getId() %>"  onclick="return confirm('Are you sure?')">delete</a>
-				<a href="<%=request.getContextPath() %>/IgnoreCoffeeShopReport?id=<%=report.getId() %>" onclick="return confirm('Are you sure?')">ignore</a>
+				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm?id=<%=report.getReportId()%>">edit</a>
+				<a href="<%=request.getContextPath()%>/DeleteCoffeeShopReport?id=<%=report.getReportId()%>"  onclick="return confirm('Are you sure?')">delete</a>
+				<a href="<%=request.getContextPath()%>/IgnoreCoffeeShopReport?id=<%=report.getReportId()%>" onclick="return confirm('Are you sure?')">ignore</a>
 			</td>
 		</tr>
 		<%	} %>

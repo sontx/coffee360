@@ -1,6 +1,6 @@
 <%@page import="com.dutproject.coffee360.model.bean.Tag"%>
 <%@page import="java.util.List"%>
-<%@page import="com.dutproject.coffee360admin.model.bean.ShopReport"%>
+<%@page import="com.dutproject.coffee360admin.model.bean.PlaceReportDetails"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,7 +17,7 @@
 
 		<h1>Edit Coffee Shop</h1>
 		<%
-			ShopReport coffeeShopReport = (ShopReport) request.getAttribute("coffeeShopReport");
+			PlaceReportDetails coffeeShopReport = (PlaceReportDetails) request.getAttribute("coffeeShopReport");
 			List<Tag> tags = (List<Tag>) request.getAttribute("tags");
 			String str_tags = "";
 			for (Tag tag : tags) {

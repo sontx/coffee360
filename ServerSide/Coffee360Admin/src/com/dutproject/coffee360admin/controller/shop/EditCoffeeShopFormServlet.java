@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.dutproject.coffee360.model.bean.Tag;
 import com.dutproject.coffee360admin.controller.BaseServlet;
 import com.dutproject.coffee360admin.controller.Urls;
-import com.dutproject.coffee360admin.model.bean.ShopReport;
-import com.dutproject.coffee360admin.model.bo.CoffeeShopReportBO;
+import com.dutproject.coffee360admin.model.bean.PlaceReportDetails;
+import com.dutproject.coffee360admin.model.bo.PlaceReportBO;
 import com.dutproject.coffee360admin.model.bo.TagBO;
 
 @WebServlet(name = "EditCoffeeShopForm", urlPatterns = { "/EditCoffeeShopForm" })
@@ -24,8 +24,8 @@ public class EditCoffeeShopFormServlet extends BaseServlet {
 			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
-		CoffeeShopReportBO coffeeShopReportBO = new CoffeeShopReportBO();
-		ShopReport coffeeShopReport = coffeeShopReportBO.getCoffeeShopReportById(id);
+		PlaceReportBO placeReportBO = new PlaceReportBO();
+		PlaceReportDetails coffeeShopReport = placeReportBO.getReportDetailsById(id);
 		TagBO tagBO = new TagBO();
 		List<Tag> tags = tagBO.getTagsById(id);
 		
