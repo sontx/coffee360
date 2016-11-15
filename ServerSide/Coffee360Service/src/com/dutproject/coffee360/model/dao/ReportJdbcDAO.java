@@ -24,8 +24,10 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 			statement = connection.createStatement();
 			String sql = String
 					.format("SELECT report.reportId, report.userAccountId, report.message, report.dateTime, report.state, "
-							+ "placereport.placeId "
+							+ "placereport.placeId, "
+							+ "place.placeName "
 							+ "FROM report INNER JOIN placereport ON report.reportId=placereport.reportId "
+							+ "INNER JOIN place ON placereport.placeId=place.placeId "
 							+ "LIMIT %d OFFSET %d", fromIndex + toIndex + 1, fromIndex);
 			ResultSet resultSet = statement.executeQuery(sql);
 			List<PlaceReport> reports = new ArrayList<>();
@@ -37,6 +39,7 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 				report.setDateTime(resultSet.getTimestamp("dateTime"));
 				report.setState(ReportState.valueOf(resultSet.getString("state")));
 				report.setPlaceId(resultSet.getInt("placeId"));
+				report.setPalceName(resultSet.getString("placeName"));
 				reports.add(report);
 			}
 			return reports;
@@ -73,7 +76,9 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 			String sql = String
 					.format("SELECT report.reportId, report.userAccountId, report.message, report.dateTime, report.state, "
 							+ "placereport.placeId "
+							+ "place.placeName "
 							+ "FROM report INNER JOIN placereport ON report.reportId=placereport.reportId "
+							+ "INNER JOIN place ON placereport.placeId=place.placeId "
 							+ "WHERE report.reportId=%d", id);
 			ResultSet resultSet = statement.executeQuery(sql);
 			if (resultSet.next()) {
@@ -84,6 +89,7 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 				report.setDateTime(resultSet.getTimestamp("dateTime"));
 				report.setState(ReportState.valueOf(resultSet.getString("state")));
 				report.setPlaceId(resultSet.getInt("placeId"));
+				report.setPalceName(resultSet.getString("placeName"));
 				return report;
 			}
 			return null;
