@@ -37,9 +37,14 @@ table, th, td {
 		
 		<!-- table datas -->
 		<%
-			ArrayList<PlaceReportDetails> listCoffeeShopReports = (ArrayList<PlaceReportDetails>)request.getAttribute("listCoffeeShopReports");
+			ArrayList<PlaceReportDetails> listPlaceReportDetails = (ArrayList<PlaceReportDetails>)request.getAttribute("listPlaceReportDetails");
 			int index = 1;
-			for (PlaceReportDetails report : listCoffeeShopReports) {
+			if (listPlaceReportDetails == null || listPlaceReportDetails.size() <= 0) {
+		%>
+		    No data
+		<%
+			} else {
+			    for (PlaceReportDetails report : listPlaceReportDetails) {
 		%>
 		<tr>
 			<td><%=index++ %></td>
@@ -47,12 +52,15 @@ table, th, td {
 			<td><%=report.getDescription() %></td>
 			<td><%=report.getQuantity() %></td>
 			<td>
-				<a href="<%=request.getContextPath() %>/EditCoffeeShopForm?id=<%=report.getReportId()%>">edit</a>
+				<a href="<%=request.getContextPath() %>/UpdatePlaceForm?id=<%=report.getReportId()%>">edit</a>
 				<a href="<%=request.getContextPath()%>/DeleteCoffeeShopReport?id=<%=report.getReportId()%>"  onclick="return confirm('Are you sure?')">delete</a>
 				<a href="<%=request.getContextPath()%>/IgnoreCoffeeShopReport?id=<%=report.getReportId()%>" onclick="return confirm('Are you sure?')">ignore</a>
 			</td>
 		</tr>
-		<%	} %>
+		<%	    
+		        }
+			}
+		%>
 	</table>
 	
 	<!-- pagination -->
@@ -68,9 +76,24 @@ table, th, td {
 			nextPageNumber = maxPageNumber;
 		}
 	%>
-	<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=previousPageNumber %>">&lt;Trước</a>
-	<input value="<%=pageNumber %>" size="1">/<%=maxPageNumber %>
-	<a href="<%=request.getContextPath() %>/CoffeeShopReport?page=<%=nextPageNumber %>">Sau&gt;</a>
+	<a href="<%=request.getContextPath() %>/PlaceReport?page=<%=previousPageNumber %>">&lt;Trước</a>
+	<input id="page" value="<%=pageNumber %>" size="1" onkeydown="submitWhenEnter();">/<%=maxPageNumber %>
+	<a href="<%=request.getContextPath() %>/PlaceReport?page=<%=nextPageNumber %>">Sau&gt;</a>
+	
+	<script type="text/javascript">
+	    function showNotification() {
+	        
+	    }
+	    
+	    function submitWhenEnter() {
+	        if (event.keyCode == 13) {
+	            var page = document.getElementById("page").value;
+	            var url = "<%=request.getContextPath() %>/PlaceReport?page=" + page;
+	            window.location = url;
+	            return false;
+	        }
+	    }
+	</script>
 
 </center>
 </body>

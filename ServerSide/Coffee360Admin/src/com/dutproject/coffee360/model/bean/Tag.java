@@ -2,6 +2,7 @@ package com.dutproject.coffee360.model.bean;
 
 public class Tag {
 	private String name;
+	public static final String DELIMITER = ",";
 	
 	public Tag() {
 	}

@@ -23,7 +23,7 @@ public class ViewPhotoReportServlet extends FilterLoginServlet {
 		PhotoReportBO reportBO = new PhotoReportBO();
 		PhotoReport report = reportBO.getReportById(reportId);
 		request.setAttribute("report", report);
-		request.getRequestDispatcher(Urls.PHOTO_VIEW_REPORT).forward(request, response);
+		request.getRequestDispatcher(Urls.PHOTO_REPORT).forward(request, response);
 	}
 
 	private int getReportId(HttpServletRequest request) {

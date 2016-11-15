@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <div>
-	<a href="<%=request.getContextPath() %>/CoffeeShopReport">Coffee shop report</a>
+	<a href="<%=request.getContextPath() %>/PlaceReport">Coffee shop report</a>
 	|
 	<a href="<%=request.getContextPath() %>/PhotoReport">Photo report</a>
 	|

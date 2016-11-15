@@ -29,7 +29,7 @@ public class PhotoReportServlet extends FilterLoginServlet {
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("maxPageNumber", maxPageNumber);
 		request.setAttribute("listPhotoReports", listPhotoReports);
-		request.getRequestDispatcher(Urls.PHOTO_LIST_REPORTS).forward(request, response);
+		request.getRequestDispatcher(Urls.PHOTO_REPORTS).forward(request, response);
 	}
 
 	private int getMaxPageNumber() {

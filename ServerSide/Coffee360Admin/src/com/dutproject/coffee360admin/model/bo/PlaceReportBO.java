@@ -28,11 +28,15 @@ public class PlaceReportBO {
 	}
 
 	public PlaceReportDetails getReportDetailsById(int id) {
-		PlaceReport placeReport = placeReportDAO.getReportByReportId(id);
+		PlaceReport placeReport = getReportByReportId(id);
 		PlaceReportDetails reportDetails = getPlaceReportDetailsFromPlaceReport(placeReport);
 		return reportDetails;
 	}
 	
+	public PlaceReport getReportByReportId(int id) {
+		return placeReportDAO.getReportByReportId(id);
+	}
+
 	private PlaceReportDetails getPlaceReportDetailsFromPlaceReport(PlaceReport placeReport) {
 		Place place = placeDAO.getPlace(placeReport.getPlaceId());
 		int reportQuantity = placeReportDAO.getReportQuantity(placeReport.getPlaceId());

@@ -2,6 +2,7 @@ package com.dutproject.coffee360admin.model.dao;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,6 +25,19 @@ public class PlaceDAO extends BaseDAO {
 			return place;
 		}
 		return null;
+	}
+
+	public boolean update(Place place) {
+		Response response = client
+				.target(PATH)
+				.path("/update")
+				.request(MediaType.APPLICATION_XML)
+				.header("Authorization", getAuthorizationString())
+				.put(Entity.entity(place, MediaType.APPLICATION_XML));
+		if (isSuccessful(response.getStatus())) {
+			return true;
+		}
+		return false;
 	}
 
 }

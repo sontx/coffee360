@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.PlaceReport;
-import com.dutproject.coffee360admin.controller.shop.PlaceReportServlet;
+import com.dutproject.coffee360admin.controller.place.PlaceReportServlet;
 
 public class PlaceReportDAO extends BaseDAO {
 	private static final String PATH = getPath("Coffee360Service/rest/v1/report/place");

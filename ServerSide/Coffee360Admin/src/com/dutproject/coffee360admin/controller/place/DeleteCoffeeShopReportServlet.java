@@ -1,4 +1,4 @@
-package com.dutproject.coffee360admin.controller.shop;
+package com.dutproject.coffee360admin.controller.place;
 
 import java.io.IOException;
 

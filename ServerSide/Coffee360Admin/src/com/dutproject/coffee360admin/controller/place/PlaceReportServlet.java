@@ -1,4 +1,4 @@
-package com.dutproject.coffee360admin.controller.shop;
+package com.dutproject.coffee360admin.controller.place;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.dutproject.coffee360admin.controller.login.FilterLoginServlet;
 import com.dutproject.coffee360admin.model.bean.PlaceReportDetails;
 import com.dutproject.coffee360admin.model.bo.PlaceReportBO;
 
-@WebServlet("/CoffeeShopReport")
+@WebServlet("/PlaceReport")
 public class PlaceReportServlet extends FilterLoginServlet {
 	private static final long serialVersionUID = 1L;
 	public static final int MAX_ENTRIES_PER_PAGE = 20;
@@ -28,8 +28,8 @@ public class PlaceReportServlet extends FilterLoginServlet {
 		
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("maxPageNumber", maxPageNumber);
-		request.setAttribute("listCoffeeShopReports", listPlaceReportDetails);
-		request.getRequestDispatcher(Urls.SHOP_LIST_REPORTS).forward(request, response);
+		request.setAttribute("listPlaceReportDetails", listPlaceReportDetails);
+		request.getRequestDispatcher(Urls.PLACE_REPORTS).forward(request, response);
 	}
 
 	private int getMaxPageNumber() {
