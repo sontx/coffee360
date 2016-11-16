@@ -26,7 +26,7 @@ public class ReportService {
 
 	@GET
 	@Path("/place/get")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlaceReports(
 			@QueryParam("fromIndex") int fromIndex,
 			@QueryParam("toIndex") int toIndex) {
@@ -43,7 +43,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/place/getone")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlaceReport(
 			@QueryParam("id") int id) {
 		try {
@@ -57,7 +57,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/place/quantity")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlaceQuantity(
 			@QueryParam("id") int id) {
 		try {
@@ -73,7 +73,7 @@ public class ReportService {
 
 	@GET
 	@Path("/place/count")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlacesCount() {		
 		try {
 			int count = reportBO.getPlacesCount();
@@ -88,7 +88,7 @@ public class ReportService {
 
 	@GET
 	@Path("/place/state")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response setPlaceReportState(@QueryParam("id") int id, @QueryParam("state") String state) {
 		try {
 			reportBO.setPlaceReportState(id, state);
@@ -103,7 +103,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/photo/get")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPhotoReports(
 			@QueryParam("fromIndex") int fromIndex,
 			@QueryParam("toIndex") int toIndex) {
@@ -119,7 +119,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/photo/getone")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPhotoReport(
 			@QueryParam("id") int id) {
 		try {
@@ -133,7 +133,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/photo/quantity")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPhotoQuantity(
 			@QueryParam("id") int id) {
 		try {
@@ -149,7 +149,7 @@ public class ReportService {
 	
 	@GET
 	@Path("/photo/count")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPhotosCount() {		
 		try {
 			int count = reportBO.getPhotosCount();

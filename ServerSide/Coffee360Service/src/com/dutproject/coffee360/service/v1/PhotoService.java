@@ -55,7 +55,7 @@ public class PhotoService extends BaseService {
 		try {
 			InputStream in = photoBO.getImageInputStream(id);
 			return new ImageStreamingOutput(in);
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 			return null;
 		}

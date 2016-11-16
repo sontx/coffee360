@@ -31,8 +31,8 @@ public class PlaceService extends BaseService {
 
 	@POST
 	@Path("/add")
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Secured({ Role.ROLE_USER })
 	public Response addPlace(Place place, @Context SecurityContext securityContext) {
 		int accountId = getAccountId(securityContext);
@@ -42,7 +42,7 @@ public class PlaceService extends BaseService {
 
 	@GET
 	@Path("/get")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlaces(@QueryParam("latitude") double locationLat, @QueryParam("longitude") double locationLng,
 			@QueryParam("radius") double radius) {
 		ArrayList<Place> places = placeBO.getPlaces(locationLat, locationLng, radius);
@@ -53,7 +53,7 @@ public class PlaceService extends BaseService {
 
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlace(@PathParam("id") int id) {
 		Place place = placeBO.getPlace(id);
 		return Response.status(200).entity(place).build();
@@ -61,7 +61,7 @@ public class PlaceService extends BaseService {
 
 	@DELETE
 	@Path("/del")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Secured({ Role.ROLE_USER })
 	public Response deletePlace(@QueryParam("id") int id) {
 		boolean result = placeBO.deletePlace(id);
@@ -72,8 +72,8 @@ public class PlaceService extends BaseService {
 	
 	@PUT
 	@Path("update")
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Secured({ Role.ROLE_USER, Role.ROLE_ADMIN })
 	public Response updatePlace(Place place) {
 		try {
@@ -87,7 +87,7 @@ public class PlaceService extends BaseService {
 	
 	@GET
 	@Path("photos")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPlacePhotos(@QueryParam("id") int id) {
 		try {
 			ArrayList<XmlInteger> result = placeBO.getPlacePhotos(id);
