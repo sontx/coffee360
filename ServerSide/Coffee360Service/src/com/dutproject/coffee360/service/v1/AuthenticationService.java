@@ -25,8 +25,8 @@ public class AuthenticationService {
 
 	@POST
 	@Path("/admin")
-	@Produces(MediaType.APPLICATION_XML)
-	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response authenticateAdmin(Credentials credentials) {
 		try {
 
@@ -70,7 +70,7 @@ public class AuthenticationService {
 
 	@GET
 	@Path("/oauth")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response oauthCallback(@QueryParam("code") String code) {
 		if (code == null || "".equals(code))
@@ -100,7 +100,7 @@ public class AuthenticationService {
 	
 	@GET
 	@Path("/user")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response authenticateUser(@QueryParam("token") String token) {
 		try {
