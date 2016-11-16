@@ -13,6 +13,7 @@ import java.util.List;
 import com.dutproject.coffee360.model.bean.Address;
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.Tag;
 import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 
@@ -305,4 +306,47 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 		}
 	}
 
+	@Override
+	public Tag getTagById(int id) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = "SELECT tagId, name FROM tag WHERE tagId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			ResultSet rs = preparedStatement.executeQuery();
+			Tag tag = new Tag();
+			if (rs.next()) {
+				tag.setName(rs.getString("name"));
+				tag.setId(id);
+			}
+			rs.close();
+			return tag;
+		} finally {
+			if (preparedStatement != null)
+				preparedStatement.close();
+		}
+	}
+
+	@Override
+	public Tag getTagByName(String name) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement preparedStatement = null;
+		try {
+			String sql = "SELECT tagId, name FROM tag WHERE name=?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, name);
+			ResultSet rs = preparedStatement.executeQuery();
+			Tag tag = new Tag();
+			if (rs.next()) {
+				tag.setName(name);
+				tag.setId(rs.getInt("tagId"));
+			}
+			rs.close();
+			return tag;
+		} finally {
+			if (preparedStatement != null)
+				preparedStatement.close();
+		}
+	}
 }

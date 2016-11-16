@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.Tag;
 import com.dutproject.coffee360.model.bean.XmlInteger;
 
 public interface IPlaceProvider {
@@ -20,4 +21,8 @@ public interface IPlaceProvider {
 	Place updatePlace(Place place) throws SQLException;
 
 	ArrayList<XmlInteger> getPlacePhotos(int id) throws SQLException;
+
+	Tag getTagById(int id) throws SQLException;
+
+	Tag getTagByName(String name) throws SQLException;
 }

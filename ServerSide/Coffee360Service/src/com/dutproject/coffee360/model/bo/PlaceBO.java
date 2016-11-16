@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.Tag;
 import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.dao.PlaceJdbcDAO;
 import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
@@ -61,6 +62,14 @@ public class PlaceBO {
 
 	public ArrayList<XmlInteger> getPlacePhotos(int id) throws SQLException {
 		return placeDAO.getPlacePhotos(id);
+	}
+
+	public Tag getTagById(int id) throws SQLException {
+		return placeDAO.getTagById(id);
+	}
+
+	public Tag getTagByName(String name) throws SQLException {
+		return placeDAO.getTagByName(name);
 	}
 
 }

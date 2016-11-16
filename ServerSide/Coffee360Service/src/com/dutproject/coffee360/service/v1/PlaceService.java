@@ -20,6 +20,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
+import com.dutproject.coffee360.model.bean.Tag;
 import com.dutproject.coffee360.model.bean.XmlInteger;
 import com.dutproject.coffee360.model.bo.PlaceBO;
 import com.dutproject.coffee360.service.Role;
@@ -94,6 +95,33 @@ public class PlaceService extends BaseService {
 			GenericEntity<ArrayList<XmlInteger>> entity = new GenericEntity<ArrayList<XmlInteger>>(result) {
 			};
 			return Response.ok(entity).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+
+	@GET
+	@Path("tag")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTag(@QueryParam("id") int id) {
+		try {
+			Tag tag = placeBO.getTagById(id);
+			return Response.ok().entity(tag).build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@GET
+	@Path("mtag")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTag(@QueryParam("name") String name) {
+		try {
+			Tag tag = placeBO.getTagByName(name);
+			return Response.ok().entity(tag).build();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
