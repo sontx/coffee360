@@ -12,9 +12,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
@@ -24,7 +26,7 @@ import com.dutproject.coffee360.service.Role;
 import com.dutproject.coffee360.service.Secured;
 
 @Path("/v1/place")
-public class PlaceService {
+public class PlaceService extends BaseService {
 	private PlaceBO placeBO = new PlaceBO();
 
 	@POST
@@ -32,8 +34,9 @@ public class PlaceService {
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	@Secured({ Role.ROLE_USER })
-	public Response addPlace(Place place) {
-		Place result = placeBO.addPlace(place);
+	public Response addPlace(Place place, @Context SecurityContext securityContext) {
+		int accountId = getAccountId(securityContext);
+		Place result = placeBO.addPlace(accountId, place);
 		return Response.status(200).entity(result).build();
 	}
 

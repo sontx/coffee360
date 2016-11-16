@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Address;
@@ -157,11 +159,17 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 			preparedStatement.close();
 			// insert place
 			int addressId = getLastRowId(statement, "address", "addressId");
-			sql = "INSERT INTO place(addressId, description, placeName) VALUES(?,?,?)";
+			Calendar calendar = Calendar.getInstance();
+			Timestamp now = new Timestamp(calendar.getTimeInMillis());
+			place.setCreatedTime(now);
+			sql = "INSERT INTO place(addressId, description, placeName, creatorId, ownerId, createdTime) VALUES(?,?,?,?,?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, addressId);
 			preparedStatement.setString(2, place.getDescription());
 			preparedStatement.setString(3, place.getName());
+			preparedStatement.setInt(4, place.getCreatorId());
+			preparedStatement.setInt(5, place.getOwnerId());
+			preparedStatement.setTimestamp(6, place.getCreatedTime());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			int placeId = getLastRowId(statement, "place", "placeId");

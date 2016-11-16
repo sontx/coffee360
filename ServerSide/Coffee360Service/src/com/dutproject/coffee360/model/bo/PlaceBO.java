@@ -33,8 +33,10 @@ public class PlaceBO {
 		return null;
 	}
 
-	public Place addPlace(Place place) {
+	public Place addPlace(int accountId, Place place) {
 		try {
+			place.setOwnerId(accountId);
+			place.setCreatorId(accountId);
 			return placeDAO.addPlace(place);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
