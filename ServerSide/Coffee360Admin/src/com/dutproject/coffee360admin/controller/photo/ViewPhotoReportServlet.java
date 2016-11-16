@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.dutproject.coffee360admin.controller.Urls;
 import com.dutproject.coffee360admin.controller.login.FilterLoginServlet;
-import com.dutproject.coffee360admin.model.bean.PhotoReport;
+import com.dutproject.coffee360admin.model.bean.PhotoReportDetails;
 import com.dutproject.coffee360admin.model.bo.PhotoReportBO;
 
 import javax.servlet.ServletException;
@@ -21,7 +21,7 @@ public class ViewPhotoReportServlet extends FilterLoginServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int reportId = getReportId(request);
 		PhotoReportBO reportBO = new PhotoReportBO();
-		PhotoReport report = reportBO.getReportById(reportId);
+		PhotoReportDetails report = reportBO.getReportById(reportId);
 		request.setAttribute("report", report);
 		request.getRequestDispatcher(Urls.PHOTO_REPORT).forward(request, response);
 	}

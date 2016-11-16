@@ -1,4 +1,4 @@
-<%@page import="com.dutproject.coffee360admin.model.bean.PhotoReport"%>
+<%@page import="com.dutproject.coffee360admin.model.bean.PhotoReportDetails"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -32,17 +32,18 @@ table, th, td {
 			<th>Action</th>
 		</tr>
 		<%
-            ArrayList<PhotoReport> listPhotoReports = (ArrayList<PhotoReport>)request.getAttribute("listPhotoReports");
+            ArrayList<PhotoReportDetails> listReportDetails =
+            	    (ArrayList<PhotoReportDetails>) request.getAttribute("listReportDetails");
             int index = 1;
-            for (PhotoReport report : listPhotoReports) {
+            for (PhotoReportDetails report : listReportDetails) {
         %>
 		<tr>
 			<td><%=index++ %></td>
 			<td>
 			     <a href="<%=request.getContextPath() %>/ViewPhotoReport?id=<%=report.getReportId() %>">
-			         <img alt="image" src="<%=report.getPhotoUrl() %>"></a>
+			         <img height="128" width="128" alt="image" src="<%=report.getPhotoUrl() %>"></a>
 			</td>
-			<td><%=report.getStatus() %></td>
+			<td><%=report.getCaption() %></td>
 			<td><%=report.getQuantity() %></td>
 			<td>
 			 <a href="<%=request.getContextPath() %>/DeletePhotoReport?id=<%=report.getReportId() %>">Delete</a> |

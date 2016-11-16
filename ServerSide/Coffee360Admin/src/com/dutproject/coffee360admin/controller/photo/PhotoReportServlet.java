@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dutproject.coffee360admin.controller.Urls;
 import com.dutproject.coffee360admin.controller.login.FilterLoginServlet;
-import com.dutproject.coffee360admin.model.bean.PhotoReport;
+import com.dutproject.coffee360admin.model.bean.PhotoReportDetails;
 import com.dutproject.coffee360admin.model.bo.PhotoReportBO;
 
 @WebServlet("/PhotoReport")
@@ -24,11 +24,11 @@ public class PhotoReportServlet extends FilterLoginServlet {
 			throws ServletException, IOException {
 		int maxPageNumber = getMaxPageNumber();
 		int pageNumber = getPageNumber(request, maxPageNumber);
-		List<PhotoReport> listPhotoReports = photoReportBO.getListReports(pageNumber);
+		List<PhotoReportDetails> listReportDetails = photoReportBO.getListReports(pageNumber);
 		
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("maxPageNumber", maxPageNumber);
-		request.setAttribute("listPhotoReports", listPhotoReports);
+		request.setAttribute("listReportDetails", listReportDetails);
 		request.getRequestDispatcher(Urls.PHOTO_REPORTS).forward(request, response);
 	}
 
@@ -40,10 +40,11 @@ public class PhotoReportServlet extends FilterLoginServlet {
 
 	private int getPageNumber(HttpServletRequest request, int maxPageNumber) {
 		String str_pageNumber = request.getParameter("page");
-		int pageNumber = 1;
+		int pageNumber;
 		try {
 			pageNumber = Integer.parseInt(str_pageNumber);
 		} catch (Exception e) {
+			pageNumber = 1;
 		}
 		if (pageNumber <= 0) {
 			pageNumber = 1;
