@@ -31,7 +31,7 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 			double lngMin = locationLng - radius;
 			double lngMax = locationLng + radius;
 			String sql = String.format(
-					"SELECT place.placeId, place.placeName, place.description, place.thumbnailId, "
+					"SELECT place.placeId, place.placeName, place.description, place.thumbnailId, place.creatorId, place.ownerId, place.createdTime, "
 							+ "address.addressId, address.addressName, "
 							+ "googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude "
 							+ "FROM place INNER JOIN address ON place.addressId=address.addressId "
@@ -49,6 +49,9 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
 				if (resultSet.wasNull())
 					place.setThumbnailId(-1);
+				place.setCreatorId(resultSet.getInt("creatorid"));
+				place.setOwnerId(resultSet.getInt("ownerId"));
+				place.setCreatedTime(resultSet.getTimestamp("createdTime"));
 
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
@@ -87,7 +90,7 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
-			String sql = String.format("SELECT place.placeId, place.placeName, place.description, place.thumbnailId, "
+			String sql = String.format("SELECT place.placeId, place.placeName, place.description, place.thumbnailId, place.creatorId, place.ownerId, place.createdTime, "
 					+ "address.addressId, address.addressName, "
 					+ "googlemapscoordinates.locationLatitude, googlemapscoordinates.locationLongitude "
 					+ "FROM place INNER JOIN address ON place.addressId=address.addressId "
@@ -103,6 +106,9 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
 				if (resultSet.wasNull())
 					place.setThumbnailId(-1);
+				place.setCreatorId(resultSet.getInt("creatorid"));
+				place.setOwnerId(resultSet.getInt("ownerId"));
+				place.setCreatedTime(resultSet.getTimestamp("createdTime"));
 
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
