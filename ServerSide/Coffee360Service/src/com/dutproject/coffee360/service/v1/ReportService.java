@@ -87,11 +87,11 @@ public class ReportService {
 	}	
 
 	@GET
-	@Path("/place/state")
+	@Path("/state")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setPlaceReportState(@QueryParam("id") int id, @QueryParam("state") String state) {
+	public Response setReportState(@QueryParam("id") int id, @QueryParam("state") String state) {
 		try {
-			reportBO.setPlaceReportState(id, state);
+			reportBO.setReportState(id, state);
 			return Response.ok().build();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -161,4 +161,5 @@ public class ReportService {
 		}
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}	
+	
 }

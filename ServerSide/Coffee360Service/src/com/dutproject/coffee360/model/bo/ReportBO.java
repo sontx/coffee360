@@ -28,8 +28,8 @@ public class ReportBO {
 		return reportProvider.getPlaceQuantity(id);
 	}
 
-	public void setPlaceReportState(int id, String state) throws SQLException {
-		reportProvider.setPlaceReportState(id, state);		
+	public void setReportState(int id, String state) throws SQLException {
+		reportProvider.setReportState(id, state);		
 	}
 
 	public List<PhotoReport> getPhotoReports(int fromIndex, int toIndex) throws SQLException {
@@ -47,4 +47,5 @@ public class ReportBO {
 	public int getPhotosCount() throws SQLException {
 		return reportProvider.getPhotosCount();
 	}
+
 }

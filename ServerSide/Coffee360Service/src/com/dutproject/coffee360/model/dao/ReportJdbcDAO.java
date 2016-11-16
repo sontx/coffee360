@@ -118,7 +118,7 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 	}
 
 	@Override
-	public void setPlaceReportState(int id, String state) throws SQLException {
+	public void setReportState(int id, String state) throws SQLException {
 		Connection connection = connectionProvider.getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
