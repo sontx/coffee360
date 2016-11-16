@@ -17,8 +17,8 @@
 
 		<h1>Edit Coffee Shop</h1>
 		<%
-			PlaceDetails placeDetails = (PlaceDetails) request.getAttribute("placeDetails");
-			List<Tag> tags = placeDetails.getTags();
+			PlaceDetails details = (PlaceDetails) request.getAttribute("details");
+			List<Tag> tags = details.getTags();
 			String str_tags = "";
 			if (tags != null) {
 	            for (Tag tag : tags) {
@@ -27,9 +27,9 @@
 			}
 		%>
 		<form action="<%=request.getContextPath() %>/UpdatePlace" method="post">
-		    <input type="hidden" name="placeId" value="<%=placeDetails.getId() %>">
-		    Name<input type="text" name="placeName" value="<%=placeDetails.getName() %>">
-		    Description<input type="text" name="description" value="<%=placeDetails.getDescription() %>">
+		    <input type="hidden" name="placeId" value="<%=details.getId() %>">
+		    Name<input type="text" name="placeName" value="<%=details.getName() %>">
+		    Description<input type="text" name="description" value="<%=details.getDescription() %>">
 		    Tag<input type="text" name="tags" value="<%=str_tags %>">
 			<input type="submit" value="Save">
 			<a href="#" onclick="history.go(-1);">Cancel</a>

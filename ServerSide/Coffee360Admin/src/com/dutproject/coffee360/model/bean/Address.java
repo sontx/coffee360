@@ -9,6 +9,13 @@ public class Address {
 	private double locationLat;
 	private double locationLng;
 
+	public Address(int id, String name, double locationLat, double locationLng) {
+		this.id = id;
+		this.name = name;
+		this.locationLat = locationLat;
+		this.locationLng = locationLng;
+	}
+	
 	public String getName() {
 		return name;
 	}

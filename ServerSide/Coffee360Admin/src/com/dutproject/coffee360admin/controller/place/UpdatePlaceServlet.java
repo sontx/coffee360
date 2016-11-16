@@ -24,15 +24,15 @@ public class UpdatePlaceServlet extends FilterLoginServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int placeId = getPlaceId(request);
 		Place place = placeBO.getPlace(placeId);
-		updatePlaceInformation(place, request);
+		updateInformation(place, request);
 		boolean result = placeBO.update(place);
 		request.getRequestDispatcher("PlaceReport").forward(request, response);
 	}
 
-	private void updatePlaceInformation(Place place, HttpServletRequest request) {
+	private void updateInformation(Place place, HttpServletRequest request) {
 		String placeName = request.getParameter("placeName");
 		String description = request.getParameter("description");
-		int[] tagIds = tagBO .getTagIds(request.getParameter("tags"));
+		int[] tagIds = tagBO.getIds(request.getParameter("tags"));
 		
 		place.setName(placeName);
 		place.setDescription(description);

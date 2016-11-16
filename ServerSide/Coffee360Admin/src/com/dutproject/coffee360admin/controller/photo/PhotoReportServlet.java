@@ -24,34 +24,34 @@ public class PhotoReportServlet extends FilterLoginServlet {
 			throws ServletException, IOException {
 		int maxPageNumber = getMaxPageNumber();
 		int pageNumber = getPageNumber(request, maxPageNumber);
-		List<PhotoReportDetails> listReportDetails = photoReportBO.getListReports(pageNumber);
+		List<PhotoReportDetails> details = photoReportBO.getListReports(pageNumber);
 		
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("maxPageNumber", maxPageNumber);
-		request.setAttribute("listReportDetails", listReportDetails);
+		request.setAttribute("details", details);
 		request.getRequestDispatcher(Urls.PHOTO_REPORTS).forward(request, response);
 	}
 
 	private int getMaxPageNumber() {
-		int totalOfPhotoReport = photoReportBO.getNumberOfReport();
-		int maxPageNumber = (totalOfPhotoReport + MAX_ENTRIES_PER_PAGE - 1) / MAX_ENTRIES_PER_PAGE;
-		return maxPageNumber;
+		int total = photoReportBO.getCountReport();
+		int max = (total + MAX_ENTRIES_PER_PAGE - 1) / MAX_ENTRIES_PER_PAGE;
+		return max;
 	}
 
 	private int getPageNumber(HttpServletRequest request, int maxPageNumber) {
-		String str_pageNumber = request.getParameter("page");
-		int pageNumber;
+		String str_page = request.getParameter("page");
+		int page;
 		try {
-			pageNumber = Integer.parseInt(str_pageNumber);
+			page = Integer.parseInt(str_page);
 		} catch (Exception e) {
-			pageNumber = 1;
+			page = 1;
 		}
-		if (pageNumber <= 0) {
-			pageNumber = 1;
-		} else if (pageNumber > maxPageNumber) {
-			pageNumber = maxPageNumber;
+		if (page <= 0) {
+			page = 1;
+		} else if (page > maxPageNumber) {
+			page = maxPageNumber;
 		}
-		return pageNumber;
+		return page;
 	}
 
 }

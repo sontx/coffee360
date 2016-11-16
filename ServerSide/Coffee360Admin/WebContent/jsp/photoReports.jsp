@@ -23,52 +23,57 @@ table, th, td {
 
 	<h1>Photo Report</h1>
 
-	<table>
-		<tr>
-			<th>Index</th>
-			<th>Image</th>
-			<th>Status</th>
-			<th>Quantity of Report</th>
-			<th>Action</th>
-		</tr>
-		<%
-            ArrayList<PhotoReportDetails> listReportDetails =
-            	    (ArrayList<PhotoReportDetails>) request.getAttribute("listReportDetails");
-            int index = 1;
-            for (PhotoReportDetails report : listReportDetails) {
-        %>
-		<tr>
-			<td><%=index++ %></td>
-			<td>
-			     <a href="<%=request.getContextPath() %>/ViewPhotoReport?id=<%=report.getReportId() %>">
-			         <img height="128" width="128" alt="image" src="<%=report.getPhotoUrl() %>"></a>
-			</td>
-			<td><%=report.getCaption() %></td>
-			<td><%=report.getQuantity() %></td>
-			<td>
-			 <a href="<%=request.getContextPath() %>/DeletePhotoReport?id=<%=report.getReportId() %>">Delete</a> |
-			 <a href="<%=request.getContextPath() %>/IgnorePhotoReport?id=<%=report.getReportId() %>">Ignore</a>
-			</td>
-		</tr>
-		<%  } %>
-	</table>
-
-	<!-- pagination -->
     <%
-        int pageNumber = (Integer) request.getAttribute("pageNumber");
-        int maxPageNumber = (Integer) request.getAttribute("maxPageNumber");
-        int previousPageNumber = pageNumber - 1;
-        if (previousPageNumber <= 0) {
-            previousPageNumber = 1;
-        }
-        int nextPageNumber = pageNumber + 1;
-        if (nextPageNumber > maxPageNumber) {
-            nextPageNumber = maxPageNumber;
-        }
+    ArrayList<PhotoReportDetails> details =
+    	    (ArrayList<PhotoReportDetails>) request.getAttribute("details");
+    if (null == details || 0 == details.size()) {
     %>
-    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=previousPageNumber %>">&lt;Trước</a>
-    <input value="<%=pageNumber %>" size="1"> / <%=maxPageNumber %>
-    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=nextPageNumber %>">Sau&gt;</a>
-
+    	<p>No data</p>
+    <% } else { %>
+		<table>
+			<tr>
+				<th>Index</th>
+				<th>Image</th>
+				<th>Status</th>
+				<th>Quantity of Report</th>
+				<th>Action</th>
+			</tr>
+			<%
+	        int index = 1;
+	        for (PhotoReportDetails detail : details) {
+	        %>
+			<tr>
+				<td><%=index++ %></td>
+				<td>
+				     <a href="<%=request.getContextPath() %>/ViewPhotoReport?id=<%=detail.getReportId() %>">
+				         <img height="128" width="128" alt="image" src="<%=detail.getPhotoUrl() %>"></a>
+				</td>
+				<td><%=detail.getCaption() %></td>
+				<td><%=detail.getQuantity() %></td>
+				<td>
+				 <a href="<%=request.getContextPath() %>/DeletePhotoReport?id=<%=detail.getReportId() %>">Delete</a> |
+				 <a href="<%=request.getContextPath() %>/IgnorePhotoReport?id=<%=detail.getReportId() %>">Ignore</a>
+				</td>
+			</tr>
+			<%  } %>
+		</table>
+	
+		<!-- pagination -->
+	    <%
+	        int pageNumber = (Integer) request.getAttribute("pageNumber");
+	        int maxPageNumber = (Integer) request.getAttribute("maxPageNumber");
+	        int previousPageNumber = pageNumber - 1;
+	        if (previousPageNumber <= 0) {
+	            previousPageNumber = 1;
+	        }
+	        int nextPageNumber = pageNumber + 1;
+	        if (nextPageNumber > maxPageNumber) {
+	            nextPageNumber = maxPageNumber;
+	        }
+	    %>
+	    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=previousPageNumber %>">&lt;Trước</a>
+	    <input value="<%=pageNumber %>" size="1"> / <%=maxPageNumber %>
+	    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=nextPageNumber %>">Sau&gt;</a>
+    <% } %>
 </body>
 </html>

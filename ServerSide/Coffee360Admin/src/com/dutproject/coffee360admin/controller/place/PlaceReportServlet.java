@@ -24,11 +24,11 @@ public class PlaceReportServlet extends FilterLoginServlet {
 			throws ServletException, IOException {
 		int maxPageNumber = getMaxPageNumber();
 		int pageNumber = getPageNumber(request, maxPageNumber);
-		List<PlaceReportDetails> listPlaceReportDetails = placeReportBO.getListReportDetails(pageNumber);
+		List<PlaceReportDetails> details = placeReportBO.getReportDetails(pageNumber);
 		
 		request.setAttribute("pageNumber", pageNumber);
 		request.setAttribute("maxPageNumber", maxPageNumber);
-		request.setAttribute("listPlaceReportDetails", listPlaceReportDetails);
+		request.setAttribute("details", details);
 		request.getRequestDispatcher(Urls.PLACE_REPORTS).forward(request, response);
 	}
 

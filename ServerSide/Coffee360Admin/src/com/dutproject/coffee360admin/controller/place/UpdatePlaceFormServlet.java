@@ -30,13 +30,13 @@ public class UpdatePlaceFormServlet extends BaseServlet {
 			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
-		PlaceReport placeReport = placeReportBO.getReportByReportId(id);
-		Place place = placeBO.getPlace(placeReport.getPlaceId());
+		PlaceReport report = placeReportBO.getReport(id);
+		Place place = placeBO.getPlace(report.getPlaceId());
 		List<Tag> tags = tagBO.getTags(place.getTagIds());
 		
-		PlaceDetails placeDetails = new PlaceDetails(place, tags);
+		PlaceDetails details = new PlaceDetails(place, tags);
 
-		request.setAttribute("placeDetails", placeDetails);
+		request.setAttribute("details", details);
 		request.getRequestDispatcher(Urls.UPDATE_PLACE).forward(request, response);
 	}
 

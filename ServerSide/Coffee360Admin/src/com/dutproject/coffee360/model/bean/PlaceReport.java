@@ -12,6 +12,15 @@ public class PlaceReport {
 	private String caption;
 	private String dateTime;
 
+	public PlaceReport(int id, int accountId, int placeId, String caption,
+			String dateTime) {
+		this.id = id;
+		this.accountId = accountId;
+		this.placeId = placeId;
+		this.caption = caption;
+		this.dateTime = dateTime;
+	}
+
 	public int getId() {
 		return id;
 	}

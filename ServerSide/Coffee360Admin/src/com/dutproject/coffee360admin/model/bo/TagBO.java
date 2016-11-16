@@ -29,16 +29,16 @@ public class TagBO {
 		return tagDAO.getTag(tagId);
 	}
 
-	public int[] getTagIds(String sTags) {
+	public int[] getIds(String sTags) {
 		List<String> tagNames = Converter.split(sTags, Tag.DELIMITER);
 		Set<Integer> tagIds = new HashSet<>();
 		for (String tagName : tagNames) {
-			tagIds.add(getTagId(tagName));
+			tagIds.add(getId(tagName));
 		}
-		return Converter.convertListIntegerToInt(new ArrayList<>(tagIds));
+		return Converter.convertIntegersToIntArray(new ArrayList<>(tagIds));
 	}
 
-	public int getTagId(String tagName) {
-		return tagDAO.getTagId(tagName);
+	public int getId(String tagName) {
+		return tagDAO.getId(tagName);
 	}
 }

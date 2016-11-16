@@ -1,5 +1,6 @@
 package com.dutproject.coffee360admin.util;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,11 +19,19 @@ public class Converter {
 		return new ArrayList<String>(Arrays.asList(pieces));
 	}
 
-	public static int[] convertListIntegerToInt(List<Integer> list) {
+	public static int[] convertIntegersToIntArray(List<Integer> list) {
 		int[] array = new int[list.size()];
 		for (int i = 0; i < list.size(); ++i) {
 			array[i] = list.get(i);
 		}
 		return array;
+	}
+
+	public static Timestamp toTimestamp(String s) {
+		try {
+			return Timestamp.valueOf(s);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

@@ -7,6 +7,9 @@ public class PlaceBO {
 	private PlaceDAO placeDAO = new PlaceDAO();
 
 	public Place getPlace(int placeId) {
+		if (placeId < 0) {
+			return null;
+		}
 		return placeDAO.getPlace(placeId);
 	}
 

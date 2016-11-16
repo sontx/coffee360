@@ -10,6 +10,15 @@ public class Place {
 	private int[] tagIds;
 	private String description;
 	private int thumbnailId;
+	
+	public Place(int id, String name, Address address, int[] tagIds, String description, int thumbnailId) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.tagIds = tagIds;
+		this.description = description;
+		this.thumbnailId = thumbnailId;
+	}
 
 	public int getId() {
 		return id;

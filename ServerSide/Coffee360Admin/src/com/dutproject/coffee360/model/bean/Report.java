@@ -14,6 +14,15 @@ public class Report {
 	private Timestamp dateTime;
 	private ReportState state;
 	
+	public Report(int id, int accountId, String caption, Timestamp dateTime,
+			ReportState state) {
+		this.id = id;
+		this.accountId = accountId;
+		this.caption = caption;
+		this.dateTime = dateTime;
+		this.state = state;
+	}
+	
 	public int getId() {
 		return id;
 	}

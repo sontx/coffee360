@@ -1,89 +1,119 @@
 package com.dutproject.coffee360admin.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.dutproject.coffee360.model.bean.PhotoReport;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
-import com.dutproject.coffee360admin.controller.photo.PhotoReportServlet;
+import com.dutproject.coffee360.model.bean.Report;
+import com.dutproject.coffee360.model.bean.ReportState;
+import com.dutproject.coffee360admin.util.Converter;
 
 public class PhotoReportDAO extends BaseDAO {
 	private static final String PATH = getPath("Coffee360Service/rest/v1/report/photo");
 	private Client client = ClientBuilder.newClient();
+	private WebTarget target = client.target(PATH);
 
-	@SuppressWarnings("rawtypes")
-	public int getNumberOfReport() {
-		Client client = ClientBuilder.newClient();
-		Response response = client
-				.target(PATH)
+	public int getCountReport() {
+		Response response = target
 				.path("/count")
-				.request(MediaType.APPLICATION_XML)
+				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", getAuthorizationString())
 				.get();
 		if (isSuccessful(response.getStatus())) {
-			PrimitiveType result = response.readEntity(PrimitiveType.class);
-			return (int) result.getValue();
+			String jsonString = response.readEntity(String.class);
+			int count = toCountReport(new JSONObject(jsonString));
+			return count;
 		}
 		return 0;
 	}
 
+	private int toCountReport(JSONObject jsonObject) {
+		return jsonObject.getInt("value");
+	}
+
 	public PhotoReport getReportById(int reportId) {
-		Client client = ClientBuilder.newClient();
-		Response response = client
-				.target(String.format(PATH + "/getone?id=%d", reportId))
-				.request(MediaType.APPLICATION_XML)
+		Response response = target
+				.path("/getone")
+				.queryParam("id", reportId)
+				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", getAuthorizationString())
 				.get();
 		if (isSuccessful(response.getStatus())) {
-			PhotoReport report = response.readEntity(PhotoReport.class);
+			String jsonString = response.readEntity(String.class);
+			PhotoReport report = toReport(new JSONObject(jsonString));
 			return report;
 		}
 		return null;
 	}
 
-	public List<PhotoReport> getListReports(int pageNumber) {
-		if (pageNumber <= 0) {
-			return null;
-		}
-		
-		int fromIndex = (pageNumber - 1) * PhotoReportServlet.MAX_ENTRIES_PER_PAGE + 1;
-		int toIndex = fromIndex + PhotoReportServlet.MAX_ENTRIES_PER_PAGE - 1;
-		int maxIndex = getNumberOfReport();
-		if (toIndex > maxIndex) {
-			toIndex = maxIndex;
-		}
-		
-		Response response = client
-				.target(String.format(PATH + "/get?fromIndex=%d&toIndex=%d", fromIndex, toIndex))
-				.request(MediaType.APPLICATION_XML)
+	public List<PhotoReport> getListReports(int fromIndex, int toIndex) {
+		Response response = target
+				.path("/get")
+				.queryParam("fromIndex", fromIndex)
+				.queryParam("toIndex", toIndex)
+				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", getAuthorizationString())
 				.get();
-		
 		if (isSuccessful(response.getStatus())) {
-			GenericType<List<PhotoReport>> list = new GenericType<List<PhotoReport>>(){};
-			List<PhotoReport> listReports = response.readEntity(list);
-			return listReports;
+			String jsonString = response.readEntity(String.class);
+			List<PhotoReport> reports = toReports(new JSONArray(jsonString));
+			return reports;
 		}
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
+	private List<PhotoReport> toReports(JSONArray jsonArray) {
+		int length = jsonArray.length();
+		List<PhotoReport> reports = new ArrayList<PhotoReport>();
+		for (int i = 0; i < length; ++i) {
+			PhotoReport report = toReport(jsonArray.getJSONObject(i));
+			reports.add(report);
+		}
+		return reports;
+	}
+
+	private PhotoReport toReport(JSONObject jsonObject) {
+		String dateTime = jsonObject.getString("dateTime");
+		int accountId = jsonObject.getInt("accountId");
+		String caption = jsonObject.getString("caption");
+		int uploadedPhotoId = jsonObject.getInt("uploadedPhotoId");
+		int id = jsonObject.getInt("id");
+		String state = jsonObject.getString("state");
+		
+		Report report = new Report(id, accountId, caption,
+				Converter.toTimestamp(dateTime), ReportState.valueOf(state));
+		PhotoReport photoReport = new PhotoReport(report, uploadedPhotoId);
+		return photoReport;
+	}
+
 	public int getQuantity(int uploadedPhotoId) {
-		Response response = client
-				.target(String.format(PATH + "/quantity?id=%d", uploadedPhotoId))
-				.request(MediaType.APPLICATION_XML)
+		Response response = target
+				.path("/quantity")
+				.queryParam("id", uploadedPhotoId)
+				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", getAuthorizationString())
 				.get();
 		if (isSuccessful(response.getStatus())) {
-			PrimitiveType result = response.readEntity(PrimitiveType.class);
-			return (int) result.getValue();
+			String jsonString = response.readEntity(String.class);
+			int quantity = toQuantity(new JSONObject(jsonString));
+			return quantity;
 		}
 		return 0;
+	}
+
+	private int toQuantity(JSONObject jsonObject) {
+		return jsonObject.getInt("value");
 	}
 
 }

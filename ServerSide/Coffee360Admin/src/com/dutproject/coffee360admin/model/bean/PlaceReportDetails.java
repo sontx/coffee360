@@ -9,10 +9,7 @@ public class PlaceReportDetails {
 	private String description;
 	private int quantity;
 
-	public PlaceReportDetails(
-			PlaceReport placeReport,
-			Place place,
-			int reportQuantity) {
+	public PlaceReportDetails(PlaceReport placeReport, Place place, int reportQuantity) {
 		reportId = placeReport.getId();
 		placeName = place.getName();
 		description = place.getDescription();
