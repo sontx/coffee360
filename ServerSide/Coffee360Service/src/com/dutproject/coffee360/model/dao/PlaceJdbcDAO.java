@@ -43,7 +43,10 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 				place.setId(resultSet.getInt("placeId"));
 				place.setName(resultSet.getString("placeName"));
 				place.setDescription(resultSet.getString("description"));
+				// can null
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
+				if (resultSet.wasNull())
+					place.setThumbnailId(-1);
 
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
@@ -94,7 +97,10 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 				place.setId(resultSet.getInt("placeId"));
 				place.setName(resultSet.getString("placeName"));
 				place.setDescription(resultSet.getString("description"));
+				// can null
 				place.setThumbnailId(resultSet.getInt("thumbnailId"));
+				if (resultSet.wasNull())
+					place.setThumbnailId(-1);
 
 				Address address = new Address();
 				address.setId(resultSet.getInt("addressId"));
@@ -135,7 +141,7 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 		try {
 			statement = connection.createStatement();
 			Address address = place.getAddress();
-			final int thumbnailId = 0;
+			final int thumbnailId = -1;
 			// insert google map coordinates of address
 			String sql = String.format(
 					"INSERT INTO googlemapscoordinates(locationLatitude, locationLongitude) VALUES(%f, %f)",
@@ -238,14 +244,23 @@ public class PlaceJdbcDAO extends JdbcBaseDAO implements IPlaceProvider {
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 			
-			sql = "UPDATE place SET placeName=?, description=? " +
-				  "WHERE place.placeId=?";
+			if (place.getThumbnailId() < 0)
+				sql = "UPDATE place SET placeName=?, description=? " +
+					  "WHERE place.placeId=?";
+			else
+				sql = "UPDATE place SET placeName=?, description=?, thumbnailId=? " +
+					  "WHERE place.placeId=?";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, place.getName());
 			preparedStatement.setString(2, place.getDescription());
-			preparedStatement.setInt(3, place.getId());
+			if (place.getThumbnailId() < 0) {
+				preparedStatement.setInt(3, place.getId());
+			} else {
+				preparedStatement.setInt(3, place.getThumbnailId());
+				preparedStatement.setInt(4, place.getId());
+			}
 			preparedStatement.executeUpdate();
-			
+
 			return place;
 		} finally {
 			if (preparedStatement != null)
