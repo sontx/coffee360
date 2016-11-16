@@ -75,13 +75,13 @@ public class ReportJdbcDAO extends JdbcBaseDAO implements IReportProvider {
 			statement = connection.createStatement();
 			String sql = String
 					.format("SELECT report.reportId, report.userAccountId, report.message, report.dateTime, report.state, "
-							+ "placereport.placeId "
+							+ "placereport.placeId,"
 							+ "place.placeName "
 							+ "FROM report INNER JOIN placereport ON report.reportId=placereport.reportId "
 							+ "INNER JOIN place ON placereport.placeId=place.placeId "
 							+ "WHERE report.reportId=%d", id);
 			ResultSet resultSet = statement.executeQuery(sql);
-			if (resultSet.next()) {
+			if (resultSet.next()) { 
 				PlaceReport report = new PlaceReport();
 				report.setId(resultSet.getInt("reportId"));
 				report.setAccountId(resultSet.getInt("userAccountId"));
