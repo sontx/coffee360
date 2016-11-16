@@ -6,14 +6,18 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+import com.dutproject.coffee360.model.bean.Place;
 import com.dutproject.coffee360.model.bean.UploadedPhoto;
 import com.dutproject.coffee360.model.dao.PhotoJdbcDAO;
+import com.dutproject.coffee360.model.dao.PlaceJdbcDAO;
 import com.dutproject.coffee360.model.dao.ResourceManager;
 import com.dutproject.coffee360.model.dao.provider.IPhotoProvider;
+import com.dutproject.coffee360.model.dao.provider.IPlaceProvider;
 import com.dutproject.coffee360.utils.SecuredTokenFactory;
 
 public class PhotoBO {
 	private IPhotoProvider photoDAO = new PhotoJdbcDAO();
+	private IPlaceProvider placeDAO =new PlaceJdbcDAO();
 	
 	private String generateUploadFileName(int accountId, String originFileName) {
 		Calendar calendar = Calendar.getInstance();
@@ -32,12 +36,17 @@ public class PhotoBO {
 				validFileName);
 	}
 	
-	public UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId) {
+	public UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId) throws Throwable {
 		try {
 			fileName = generateUploadFileName(accountId, fileName);
-			return photoDAO.uploadPlacePhoto(accountId, in, fileName, placeId);
+			UploadedPhoto uploadedPhoto = photoDAO.uploadPlacePhoto(accountId, in, fileName, placeId);
+			Place place = placeDAO.getPlace(placeId);
+			if (place != null && place.getThumbnailId() < 0) {
+				place.setThumbnailId(uploadedPhoto.getId());
+				placeDAO.updatePlace(place);
+			}
+			return uploadedPhoto;
 		} catch (IOException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

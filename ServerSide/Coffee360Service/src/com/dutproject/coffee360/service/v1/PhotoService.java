@@ -39,8 +39,13 @@ public class PhotoService extends BaseService {
 			@FormDataParam("photo") FormDataContentDisposition detail, @QueryParam("placeId") int placeId,
 			@Context SecurityContext securityContext) {
 		int accountId = getAccountId(securityContext);
-		UploadedPhoto uploadedPhoto = photoBO.uploadPlacePhoto(accountId, in, detail.getFileName(), placeId);
-		return Response.status(200).entity(uploadedPhoto).build();
+		try {
+			UploadedPhoto uploadedPhoto = photoBO.uploadPlacePhoto(accountId, in, detail.getFileName(), placeId);
+			return Response.status(200).entity(uploadedPhoto).build();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@GET
