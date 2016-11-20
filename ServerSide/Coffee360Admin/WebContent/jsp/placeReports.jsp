@@ -53,9 +53,9 @@ table, th, td {
 				<td><%=detail.getQuantity() %></td>
 				<td>
 					<a href="<%=request.getContextPath() %>/UpdatePlaceForm?id=<%=detail.getReportId()%>">edit</a>
-					<a href="<%=request.getContextPath()%>/DeleteCoffeeShopReport?id=<%=detail.getReportId()%>"
+					<a href="<%=request.getContextPath()%>/ChangePlaceReportState?id=<%=detail.getReportId()%>&state=accepted"
 					   onclick="return confirm('Are you sure?')">delete</a>
-					<a href="<%=request.getContextPath()%>/IgnoreCoffeeShopReport?id=<%=detail.getReportId()%>"
+					<a href="<%=request.getContextPath()%>/ChangePlaceReportState?id=<%=detail.getReportId()%>&state=ignored"
 					   onclick="return confirm('Are you sure?')">ignore</a>
 				</td>
 			</tr>

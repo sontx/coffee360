@@ -11,12 +11,9 @@
 
 	<jsp:include page="navbar.jsp"></jsp:include>
 
-    <%
-    	PhotoReportDetails report = (PhotoReportDetails) request.getAttribute("report");
-    %>
+    <% PhotoReportDetails report = (PhotoReportDetails) request.getAttribute("report"); %>
 	<img alt="image report" src="#<%=report.getPhotoUrl() %>">
-	<p><%=report.getUsername() %></p>
-	<p><%=report.getStatus() %></p>
+	<p><%=report.getCaption() %></p>
 	<p>
 		<a href="#<%=report.getReportId() %>">delete</a> |
 		<a href="#<%=report.getReportId() %>">ignore</a>

@@ -1,6 +1,5 @@
 package com.dutproject.coffee360admin.model.dao;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -11,14 +10,12 @@ import org.json.JSONObject;
 import com.dutproject.coffee360.model.bean.Tag;
 
 public class TagDAO extends BaseDAO {
-	private static final String PATH = getPath("Coffee360Service/rest/v1/place/tag");
-	private static final String PATH_2 = getPath("Coffee360Service/rest/v1/place/mtag");
-	private Client client = ClientBuilder.newClient();
-	private WebTarget target = client.target(PATH);
-	private WebTarget target2 = client.target(PATH_2);
+	private static final String PATH = getPath("Coffee360Service/rest/v1/place");
+	private WebTarget target = ClientBuilder.newClient().target(PATH);
 
 	public Tag getTag(int tagId) {
 		Response response = target
+				.path("/tag")
 				.queryParam("id", tagId)
 				.request(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
@@ -39,7 +36,8 @@ public class TagDAO extends BaseDAO {
 	}
 
 	public int getId(String tagName) {
-		Response response = target2
+		Response response = target
+				.path("/mtag")
 				.queryParam("name", tagName)
 				.request(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)

@@ -37,15 +37,15 @@ public class PlaceReportBO {
 		
 		List<PlaceReportDetails> listPlaceReportDetails = new ArrayList<PlaceReportDetails>();
 		for (PlaceReport placeReport : listPlaceReports) {
-			PlaceReportDetails reportDetails = getPlaceReportDetailsFromPlaceReport(placeReport);
+			PlaceReportDetails reportDetails = getPlaceReportDetails(placeReport);
 			listPlaceReportDetails.add(reportDetails);
 		}
 		return listPlaceReportDetails;
 	}
 
-	public PlaceReportDetails getReportDetailsById(int id) {
-		PlaceReport placeReport = getReport(id);
-		PlaceReportDetails reportDetails = getPlaceReportDetailsFromPlaceReport(placeReport);
+	public PlaceReportDetails getReportDetailsById(int reportId) {
+		PlaceReport placeReport = getReport(reportId);
+		PlaceReportDetails reportDetails = getPlaceReportDetails(placeReport);
 		return reportDetails;
 	}
 	
@@ -53,12 +53,16 @@ public class PlaceReportBO {
 		return placeReportDAO.getReport(reportId);
 	}
 
-	private PlaceReportDetails getPlaceReportDetailsFromPlaceReport(PlaceReport placeReport) {
+	private PlaceReportDetails getPlaceReportDetails(PlaceReport placeReport) {
 		Place place = placeDAO.getPlace(placeReport.getPlaceId());
 		int reportQuantity = placeReportDAO.getReportQuantity(placeReport.getPlaceId());
 		PlaceReportDetails reportDetails =
 				new PlaceReportDetails(placeReport, place, reportQuantity);
 		return reportDetails;
+	}
+
+	public boolean changeState(int reportId, String state) {
+		return placeReportDAO.changeState(reportId, state);
 	}
 
 }

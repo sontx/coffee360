@@ -15,8 +15,7 @@ import com.dutproject.coffee360.model.bean.Place;
 
 public class PlaceDAO extends BaseDAO {
 	private static final String PATH = getPath("Coffee360Service/rest/v1/place");
-	private Client client = ClientBuilder.newClient();
-	private WebTarget target = client.target(PATH);
+	private WebTarget target = ClientBuilder.newClient().target(PATH);
 
 	public Place getPlace(int placeId) {
 		Response response = target

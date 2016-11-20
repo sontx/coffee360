@@ -17,6 +17,7 @@ import com.dutproject.coffee360admin.model.bean.PlaceDetails;
 import com.dutproject.coffee360admin.model.bo.PlaceBO;
 import com.dutproject.coffee360admin.model.bo.PlaceReportBO;
 import com.dutproject.coffee360admin.model.bo.TagBO;
+import com.dutproject.coffee360admin.util.Converter;
 
 @WebServlet(name = "UpdatePlaceForm", urlPatterns = { "/UpdatePlaceForm" })
 public class UpdatePlaceFormServlet extends BaseServlet {
@@ -28,7 +29,7 @@ public class UpdatePlaceFormServlet extends BaseServlet {
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
+		int id = Converter.pareToInt(request.getParameter("id"), -1);
 		
 		PlaceReport report = placeReportBO.getReport(id);
 		Place place = placeBO.getPlace(report.getPlaceId());

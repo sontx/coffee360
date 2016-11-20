@@ -3,10 +3,8 @@ package com.dutproject.coffee360admin.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,15 +12,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.dutproject.coffee360.model.bean.PhotoReport;
-import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bean.Report;
 import com.dutproject.coffee360.model.bean.ReportState;
 import com.dutproject.coffee360admin.util.Converter;
 
 public class PhotoReportDAO extends BaseDAO {
 	private static final String PATH = getPath("Coffee360Service/rest/v1/report/photo");
-	private Client client = ClientBuilder.newClient();
-	private WebTarget target = client.target(PATH);
+	private WebTarget target = ClientBuilder.newClient().target(PATH);
 
 	public int getCountReport() {
 		Response response = target
