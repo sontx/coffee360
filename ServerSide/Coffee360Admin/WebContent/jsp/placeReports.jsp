@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Coffee Shop Report Management</title>
@@ -17,6 +18,7 @@ table, th, td {
 }
 </style>
 </head>
+
 <body>
 <center>
 
@@ -76,23 +78,23 @@ table, th, td {
 			}
 		%>
 		<a href="<%=request.getContextPath() %>/PlaceReport?page=<%=previousPageNumber %>">&lt;Trước</a>
-		<input id="page" value="<%=pageNumber %>" size="1" onkeydown="submitWhenEnter();">/<%=maxPageNumber %>
+		<input id="page" value="<%=pageNumber %>" size="1" onkeydown="submitWhenEnter();" onkeypress='return filterChar();'>/<%=maxPageNumber %>
 		<a href="<%=request.getContextPath() %>/PlaceReport?page=<%=nextPageNumber %>">Sau&gt;</a>
 	<% } %>
 	
 	<script type="text/javascript">
-	    function showNotification() {
-	        
-	    }
-	    
 	    function submitWhenEnter() {
 	        if (event.keyCode == 13) {
 	            var page = document.getElementById("page").value;
 	            var url = "<%=request.getContextPath() %>/PlaceReport?page=" + page;
-	            window.location = url;
-	            return false;
+                window.location = url;
+                return false;
 	        }
 	    }
+	    
+	    function filterChar() {
+	    	return event.charCode >= 48 && event.charCode <= 57;
+		}
 	</script>
 
 </center>
