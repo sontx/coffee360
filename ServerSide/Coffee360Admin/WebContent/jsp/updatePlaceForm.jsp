@@ -28,11 +28,27 @@
 		%>
 		<form action="<%=request.getContextPath() %>/UpdatePlace" method="post">
 		    <input type="hidden" name="placeId" value="<%=details.getId() %>">
-		    Name<input type="text" name="placeName" value="<%=details.getName() %>">
-		    Description<input type="text" name="description" value="<%=details.getDescription() %>">
-		    Tag<input type="text" name="tags" value="<%=str_tags %>">
-			<input type="submit" value="Save">
-			<a href="#" onclick="history.go(-1);">Cancel</a>
+		    <table>
+		      <tr>
+		          <td>Name<span style="color: red;">*</span></td>
+		          <td><input type="text" name="placeName" value="<%=details.getName() %>" required></td>
+		      </tr>
+              <tr>
+                  <td>Description</td>
+                  <td><input type="text" name="description" value="<%=details.getDescription() %>"></td>
+              </tr>
+              <tr>
+                  <td>Tags</td>
+                  <td><input type="text" name="tags" value="<%=str_tags %>"></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td>
+                    <input type="submit" value="Save">
+                    <a href="#" onclick="history.go(-1);">Cancel</a>
+                  </td>
+              </tr>
+		    </table>
 		</form>
 		
 	</center>
