@@ -8,16 +8,16 @@
 <title>View Image Report</title>
 </head>
 <body>
-
+<center>
 	<jsp:include page="navbar.jsp"></jsp:include>
 
-    <% PhotoReportDetails report = (PhotoReportDetails) request.getAttribute("report"); %>
-	<img alt="image report" src="#<%=report.getPhotoUrl() %>">
-	<p><%=report.getCaption() %></p>
+    <% PhotoReportDetails detail = (PhotoReportDetails) request.getAttribute("detail"); %>
+	<img height="128" width="128" alt="image report" src="#<%=detail.getPhotoUrl() %>">
+	<p><%=detail.getCaption() %></p>
 	<p>
-		<a href="#<%=report.getReportId() %>">delete</a> |
-		<a href="#<%=report.getReportId() %>">ignore</a>
+		<a href="<%=request.getContextPath() %>/ChangePhotoReportState?state=delete&id=<%=detail.getReportId() %>">delete</a> |
+		<a href="<%=request.getContextPath() %>/ChangePhotoReportState?state=ignore&id=<%=detail.getReportId() %>">ignore</a>
 	</p>
-
+</center>
 </body>
 </html>

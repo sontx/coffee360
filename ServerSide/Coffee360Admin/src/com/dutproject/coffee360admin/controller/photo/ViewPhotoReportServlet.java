@@ -21,8 +21,8 @@ public class ViewPhotoReportServlet extends FilterLoginServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int reportId = getReportId(request);
 		PhotoReportBO reportBO = new PhotoReportBO();
-		PhotoReportDetails report = reportBO.getReportById(reportId);
-		request.setAttribute("report", report);
+		PhotoReportDetails detail = reportBO.getReportDetailsById(reportId);
+		request.setAttribute("detail", detail);
 		request.getRequestDispatcher(Urls.PHOTO_REPORT).forward(request, response);
 	}
 

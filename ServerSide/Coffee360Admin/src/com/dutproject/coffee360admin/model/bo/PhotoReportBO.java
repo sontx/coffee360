@@ -37,7 +37,7 @@ public class PhotoReportBO {
 		return photoReportDAO.getCountReport();
 	}
 
-	public PhotoReportDetails getReportById(int reportId) {
+	public PhotoReportDetails getReportDetailsById(int reportId) {
 		PhotoReport report = photoReportDAO.getReportById(reportId);
 		return getReportDetails(report);
 	}
