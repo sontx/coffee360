@@ -112,4 +112,14 @@ public class PhotoReportDAO extends BaseDAO {
 		return jsonObject.getInt("value");
 	}
 
+	public void changeReportState(int reportId, String state) {
+		target
+		.path("/state")
+		.queryParam("id", reportId)
+		.queryParam("state", state)
+		.request()
+		.header("Authorization", getAuthorizationString())
+		.get();
+	}
+
 }

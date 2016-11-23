@@ -51,8 +51,8 @@ table, th, td {
 				<td><%=detail.getCaption() %></td>
 				<td><%=detail.getQuantity() %></td>
 				<td>
-				 <a href="<%=request.getContextPath() %>/DeletePhotoReport?id=<%=detail.getReportId() %>">Delete</a> |
-				 <a href="<%=request.getContextPath() %>/IgnorePhotoReport?id=<%=detail.getReportId() %>">Ignore</a>
+				 <a href="<%=request.getContextPath() %>/ChangePhotoReportState?state=delete&id=<%=detail.getReportId() %>" onclick="return confirm('Are you sure?')">Delete</a> |
+				 <a href="<%=request.getContextPath() %>/ChangePhotoReportState?state=ignore&id=<%=detail.getReportId() %>" onclick="return confirm('Are you sure?')">Ignore</a>
 				</td>
 			</tr>
 			<%  } %>

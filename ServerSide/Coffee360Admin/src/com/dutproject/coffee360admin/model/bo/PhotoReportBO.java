@@ -50,4 +50,8 @@ public class PhotoReportBO {
 		return new PhotoReportDetails(reportId, photoUrl, caption, quantity);
 	}
 
+	public void changeReportState(int reportId, String state) {
+		photoReportDAO.changeReportState(reportId, state);
+	}
+
 }
