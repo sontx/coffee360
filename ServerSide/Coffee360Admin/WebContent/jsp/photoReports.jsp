@@ -18,7 +18,7 @@ table, th, td {
 </style>
 </head>
 <body>
-
+<center>
 	<jsp:include page="navbar.jsp"></jsp:include>
 
 	<h1>Photo Report</h1>
@@ -72,8 +72,25 @@ table, th, td {
 	        }
 	    %>
 	    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=previousPageNumber %>">&lt;Trước</a>
-	    <input value="<%=pageNumber %>" size="1"> / <%=maxPageNumber %>
+	    <input id="page" value="<%=pageNumber %>" size="1" onkeydown="submitWhenEnter();" onkeypress='return filterChar();'> / <%=maxPageNumber %>
 	    <a href="<%=request.getContextPath() %>/PhotoReport?page=<%=nextPageNumber %>">Sau&gt;</a>
     <% } %>
+    
+    <script type="text/javascript">
+        function submitWhenEnter() {
+            if (event.keyCode == 13) {
+                var page = document.getElementById("page").value;
+                var url = "<%=request.getContextPath() %>/PhotoReport?page=" + page;
+                window.location = url;
+                return false;
+            }
+        }
+        
+        function filterChar() {
+            return event.charCode >= 48 && event.charCode <= 57;
+        }
+    </script>
+    
+</center>
 </body>
 </html>
