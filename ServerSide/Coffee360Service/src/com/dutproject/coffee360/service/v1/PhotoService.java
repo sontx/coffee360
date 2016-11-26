@@ -44,8 +44,8 @@ public class PhotoService extends BaseService {
 			return Response.status(200).entity(uploadedPhoto).build();
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
-		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@GET
