@@ -8,6 +8,7 @@ public class Comment {
     private String ownerUsername;
     private String content;
     private boolean liked;
+    private String avatarUrl;
 
     public String getContent() {
         return content;
@@ -39,5 +40,13 @@ public class Comment {
 
     public void setOwnerUsername(String ownerUsername) {
         this.ownerUsername = ownerUsername;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

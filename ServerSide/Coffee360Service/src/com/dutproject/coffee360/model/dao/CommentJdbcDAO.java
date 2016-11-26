@@ -1,4 +1,4 @@
-package com.dutproject.coffee360.model.dao;
+    package com.dutproject.coffee360.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +12,7 @@ import com.dutproject.coffee360.model.bean.CommentTable;
 import com.dutproject.coffee360.model.dao.provider.ICommentProvider;
 
 public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
+    private UserAccountJdbcDAO userAccountDAO = new UserAccountJdbcDAO();
 
     @Override
     public List<Comment> getComments(int placeId, int fromIndex, int toIndex) throws SQLException {
@@ -23,6 +24,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             comment.setContent(table.getMessage());
             comment.setLiked(isLiked(table.getUserAccountId(), placeId));
             comment.setOwnerUsername(getOwnerUsername(table.getCommentId()));
+            comment.setAvatarUrl(userAccountDAO.getUserAccountTable(table.getUserAccountId()).getAvatarUrl());
             listComments.add(comment);
         }
         return listComments;
