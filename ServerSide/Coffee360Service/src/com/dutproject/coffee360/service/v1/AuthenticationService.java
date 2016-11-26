@@ -65,6 +65,7 @@ public class AuthenticationService {
 		userAccount.setFullName(profileData.get("name"));
 		userAccount.setAddress(profileData.get("location"));
 		userAccount.setGender(profileData.get("gender"));
+		userAccount.setAvatarUrl(profileData.get("avatarUrl"));
 		return userAccount;
 	}
 	

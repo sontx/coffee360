@@ -10,6 +10,7 @@ public class UserAccount extends Account {
 	private String fullName;
 	private String gender;
 	private int avatarId;
+	private String avatarUrl;
 
 	@XmlElement
 	public String getAccessToken() {
@@ -54,5 +55,13 @@ public class UserAccount extends Account {
 	@XmlElement
 	public void setAvatarId(int avatarId) {
 		this.avatarId = avatarId;
+	}
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
 	}
 }

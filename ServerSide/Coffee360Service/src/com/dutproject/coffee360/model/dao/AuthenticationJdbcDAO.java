@@ -49,7 +49,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 		try {
 			String sql = "SELECT account.accountId, account.username, " +
 						 "accountpermission.permission, " +
-						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender " +
+						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender, useraccount.avatarUrl " +
 						 "FROM account INNER JOIN accountpermission " +
 						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
 						 "INNER JOIN useraccount ON useraccount.accountId=account.accountId " +
@@ -68,6 +68,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 				account.setAvatarId(resultSet.getInt("avatarId"));
 				account.setFullName(resultSet.getString("fullName"));
 				account.setGender(resultSet.getString("gender").equals("f") ? "fimale" : "male");
+				account.setAvatarUrl(resultSet.getString("avatarUrl"));
 				
 				resultSet.close();
 				return account;
@@ -95,13 +96,14 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 			int accountId = getLastRowId(statement, "account", "accountId");
 			prepareStatement.close();
 			
-			sql = "INSERT INTO useraccount(accessToken, accountId, address, fullName, gender) VALUES(?,?,?,?,?)";
+			sql = "INSERT INTO useraccount(accessToken, accountId, address, fullName, gender, avatarUrl) VALUES(?,?,?,?,?,?)";
 			prepareStatement = connection.prepareStatement(sql);
 			prepareStatement.setString(1, newUserAccount.getAccessToken());
 			prepareStatement.setInt(2, accountId);
 			prepareStatement.setString(3, newUserAccount.getAddress());
 			prepareStatement.setString(4, newUserAccount.getFullName());
 			prepareStatement.setString(5, newUserAccount.getGender().substring(0, 1));
+			prepareStatement.setString(6, newUserAccount.getAvatarUrl());
 			prepareStatement.executeUpdate();
 			
 			newUserAccount.setId(accountId);
@@ -121,7 +123,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 		try {
 			String sql = "SELECT account.accountId, account.username, " +
 						 "accountpermission.permission, " +
-						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender " +
+						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender, useraccount.avatarUrl " +
 						 "FROM account INNER JOIN accountpermission " +
 						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
 						 "INNER JOIN useraccount ON useraccount.accountId=account.accountId " +
@@ -140,6 +142,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 				account.setAvatarId(resultSet.getInt("avatarId"));
 				account.setFullName(resultSet.getString("fullName"));
 				account.setGender(resultSet.getString("gender").equals("f") ? "fimale" : "male");
+				account.setAvatarUrl(resultSet.getString("avatarUrl"));
 				
 				resultSet.close();
 				return account;

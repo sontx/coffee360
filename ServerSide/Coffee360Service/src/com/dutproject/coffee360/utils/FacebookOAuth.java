@@ -36,6 +36,14 @@ public final class FacebookOAuth {
 		String url = "https://graph.facebook.com/me?access_token=" + accessToken + "&fields=id,name,email,gender,location";
 		return new URL(url);
 	}
+	
+	private String getAvatarUrl(String userId) throws IOException {
+		String surl = "http://graph.facebook.com/" + userId + "/?fields=picture&type=large&redirect=false";
+		URL url = new URL(surl);
+		String json = ConnectionUtils.getTextFromUrl(url);
+		JSONObject jsonObject = new JSONObject(json);
+		return jsonObject.getJSONObject("data").getString("url");
+	}
 
 	public String requestAccessToken(String code, String redirectUri) throws IOException {
 		URL facebookUrl = getOAuthGraphUrl(code, redirectUri);
@@ -53,7 +61,8 @@ public final class FacebookOAuth {
 		String graphData = ConnectionUtils.getTextFromUrl(dataGraphUrl);
 		Map<String, String> profileData = new HashMap<String, String>();
 		JSONObject json = new JSONObject(graphData);
-		profileData.put("id", json.getString("id"));
+		String sid = json.getString("id");
+		profileData.put("id", sid);
 		profileData.put("name", json.getString("name"));
 		if (json.has("email"))
 			profileData.put("email", json.getString("email"));
@@ -63,6 +72,7 @@ public final class FacebookOAuth {
 			JSONObject locationObject = json.getJSONObject("location");
 			profileData.put("location", locationObject.getString("name"));
 		}
+		profileData.put("avatarUrl", getAvatarUrl(sid));
 		return profileData;
 	}
 }
