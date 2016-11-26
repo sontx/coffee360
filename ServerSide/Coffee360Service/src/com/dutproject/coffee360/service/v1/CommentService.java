@@ -50,10 +50,10 @@ public class CommentService extends BaseService {
             @QueryParam("placeId") int placeId,
             @QueryParam("userAccountId") int userAccountId,
             @QueryParam("message") String message) {
-        boolean result;
+        String result;
         try {
             result = commentBO.addComment(placeId, userAccountId, message);
-            PrimitiveType<Boolean> booleanType = new PrimitiveType<>();
+            PrimitiveType<String> booleanType = new PrimitiveType<>();
             booleanType.setValue(result);
             return Response.status(200).entity(booleanType).build();
         } catch (SQLException e) {

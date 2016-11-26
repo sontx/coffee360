@@ -110,7 +110,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
 
     
     @Override
-    public boolean addComment(int placeId, int userAccountId, String message) throws SQLException {
+    public String addComment(int placeId, int userAccountId, String message) throws SQLException {
         Connection connection = connectionProvider.getConnection();
         PreparedStatement prepareStatement = null;
         try {
@@ -120,8 +120,8 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             prepareStatement.setInt(2, userAccountId);
             prepareStatement.setString(3, message);
             int i = prepareStatement.executeUpdate();
-            boolean result = i > 0;
-            return result;
+            boolean isSuccess = i > 0;
+            return isSuccess ? message : null;
         } finally {
             if (prepareStatement != null)
                 prepareStatement.close();
