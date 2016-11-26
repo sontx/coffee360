@@ -17,39 +17,29 @@ import com.dutproject.coffee360.utils.SecuredTokenFactory;
 
 public class PhotoBO {
 	private IPhotoProvider photoDAO = new PhotoJdbcDAO();
-	private IPlaceProvider placeDAO =new PlaceJdbcDAO();
-	
+	private IPlaceProvider placeDAO = new PlaceJdbcDAO();
+
 	private String generateUploadFileName(int accountId, String originFileName) {
 		Calendar calendar = Calendar.getInstance();
 		String randomToken = SecuredTokenFactory.generateSecuredToken();
 		String validFileName = originFileName.replace(' ', '-').toLowerCase();
 		// yyyy MM dd hh mm ss - random - id - filename
-		return String.format("%04d%02d%02d%02d%02d%02d-%s-%013d-%s", 
-				calendar.get(Calendar.YEAR),
-				calendar.get(Calendar.MONTH) + 1,
-				calendar.get(Calendar.DAY_OF_MONTH),
-				calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE),
-				calendar.get(Calendar.SECOND),
-				randomToken,
-				accountId,
-				validFileName);
+		return String.format("%04d%02d%02d%02d%02d%02d-%s-%013d-%s", calendar.get(Calendar.YEAR),
+				calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
+				calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND),
+				randomToken, accountId, validFileName);
 	}
-	
-	public UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId) throws Throwable {
-		try {
-			fileName = generateUploadFileName(accountId, fileName);
-			UploadedPhoto uploadedPhoto = photoDAO.uploadPlacePhoto(accountId, in, fileName, placeId);
-			Place place = placeDAO.getPlace(placeId);
-			if (place != null && place.getThumbnailId() < 0) {
-				place.setThumbnailId(uploadedPhoto.getId());
-				placeDAO.updatePlace(place);
-			}
-			return uploadedPhoto;
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
+
+	public UploadedPhoto uploadPlacePhoto(int accountId, InputStream in, String fileName, int placeId)
+			throws Throwable {
+		fileName = generateUploadFileName(accountId, fileName);
+		UploadedPhoto uploadedPhoto = photoDAO.uploadPlacePhoto(accountId, in, fileName, placeId);
+		Place place = placeDAO.getPlace(placeId);
+		if (place != null && place.getThumbnailId() < 0) {
+			place.setThumbnailId(uploadedPhoto.getId());
+			placeDAO.updatePlace(place);
 		}
-		return null;
+		return uploadedPhoto;
 	}
 
 	public InputStream getImageInputStream(int id) throws SQLException {
