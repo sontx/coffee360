@@ -106,5 +106,26 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
                 prepareStatement.close();
         }
     }
+
+
+    
+    @Override
+    public boolean addComment(int placeId, int userAccountId, String message) throws SQLException {
+        Connection connection = connectionProvider.getConnection();
+        PreparedStatement prepareStatement = null;
+        try {
+            String sql = "INSERT INTO `comment`(`placeId`, `userAccountId`, `message`, `dateTime`) VALUES (?,?,?,NOW())";
+            prepareStatement = connection.prepareStatement(sql);
+            prepareStatement.setInt(1, placeId);
+            prepareStatement.setInt(2, userAccountId);
+            prepareStatement.setString(3, message);
+            int i = prepareStatement.executeUpdate();
+            boolean result = i > 0;
+            return result;
+        } finally {
+            if (prepareStatement != null)
+                prepareStatement.close();
+        }
+    }
     
 }

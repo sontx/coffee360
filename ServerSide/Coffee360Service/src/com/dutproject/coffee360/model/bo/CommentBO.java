@@ -14,4 +14,8 @@ public class CommentBO {
         return commentProvider.getComments(placeId, fromIndex, toIndex);
     }
 
+    public boolean addComment(int placeId, int userAccountId, String message) throws SQLException {
+        return commentProvider.addComment(placeId, userAccountId, message);
+    }
+
 }

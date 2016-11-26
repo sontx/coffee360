@@ -11,4 +11,5 @@ public interface ICommentProvider {
     String getOwnerUsername(int commentId) throws SQLException;
     boolean isLiked(int userAccountId, int placeId) throws SQLException;
     List<CommentTable> getCommentTable(int placeId, int fromIndex, int toIndex) throws SQLException;
+    boolean addComment(int placeId, int userAccountId, String message) throws SQLException;
 }
