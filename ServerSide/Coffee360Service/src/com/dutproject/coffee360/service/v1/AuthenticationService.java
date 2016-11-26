@@ -67,6 +67,35 @@ public class AuthenticationService {
 		userAccount.setGender(profileData.get("gender"));
 		return userAccount;
 	}
+	
+	@GET
+	@Path("/oauth2")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response oauth2(@QueryParam("accessToken") String accessToken) {
+		if (accessToken == null || "".equals(accessToken))
+			return Response.status(Response.Status.NO_CONTENT).build();
+		try {
+			// get user account info from social network
+			Map<String, String> profileData = FacebookOAuth.getInstance().getProfileData(accessToken);
+			UserAccount userAccount = createUserAccountFromProfileData(accessToken, profileData);
+			
+			// check account is existing
+			UserAccount existingAccount = authenticationBO.getAccountByUserName(userAccount.getUserName());
+			
+			// create new one if account is not exist
+			if (existingAccount == null)
+				existingAccount = authenticationBO.createNewUserAccount(userAccount);
+			
+			String tempAccessToken = authenticationBO.issueToken(existingAccount);
+			existingAccount.setAccessToken(tempAccessToken);
+			
+			return Response.ok().entity(existingAccount).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+		}
+	}
 
 	@GET
 	@Path("/oauth")
