@@ -3,16 +3,20 @@ package com.dutproject.coffee360.service.v1;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import com.dutproject.coffee360.model.bean.Comment;
+import com.dutproject.coffee360.model.bean.NewComment;
 import com.dutproject.coffee360.model.bean.PlaceReport;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bo.CommentBO;
@@ -44,21 +48,15 @@ public class CommentService extends BaseService {
     
     @POST
     @Path("/place/add")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Secured({Role.ROLE_USER})
-    public Response addComment(
-            @QueryParam("placeId") int placeId,
-            @QueryParam("userAccountId") int userAccountId,
-            @QueryParam("message") String message) {
-        String result;
-        try {
-            result = commentBO.addComment(placeId, userAccountId, message);
-            PrimitiveType<String> booleanType = new PrimitiveType<>();
-            booleanType.setValue(result);
-            return Response.status(200).entity(booleanType).build();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+    public Response addComment(NewComment comment, @Context SecurityContext securityContext) throws SQLException {
+        int accountId = getAccountId(securityContext);
+        String result = commentBO.addComment(accountId, comment);
+        PrimitiveType<String> stringType = new PrimitiveType<>();
+        stringType.setValue(result);
+        return Response.status(200).entity(stringType).build();
     }
+    
 }

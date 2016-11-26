@@ -39,4 +39,32 @@ public class UserAccountJdbcDAO extends JdbcBaseDAO implements IUserAccountProvi
         }
     }
 
+    public UserAccountTable getUserAccountByAccountId(int accountId) throws SQLException {
+        Connection connection = connectionProvider.getConnection();
+        PreparedStatement prepareStatement = null;
+        try {
+            String sql = "SELECT * FROM `useraccount` WHERE accountId=?";
+            prepareStatement = connection.prepareStatement(sql);
+            prepareStatement.setInt(1, accountId);
+            ResultSet rs = prepareStatement.executeQuery();
+            UserAccountTable userAccount = null;
+            if (rs.next()) {
+                userAccount = new UserAccountTable();
+                userAccount.setUserAccountId(rs.getInt("userAccountId"));
+                userAccount.setAccountId(rs.getInt("accountId"));
+                userAccount.setAvatarId(rs.getInt("avatarId"));
+                userAccount.setAvatarUrl(rs.getString("avatarUrl"));
+                userAccount.setAccessToken(rs.getString("accessToken"));
+                userAccount.setFullName(rs.getString("fullName"));
+                userAccount.setAddress(rs.getString("address"));
+                userAccount.setGender(rs.getString("gender"));
+            }
+            rs.close();
+            return userAccount;
+        } finally {
+            if (prepareStatement != null)
+                prepareStatement.close();
+        }
+    }
+
 }
