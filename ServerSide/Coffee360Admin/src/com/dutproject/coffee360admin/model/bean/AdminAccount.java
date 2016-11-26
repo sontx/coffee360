@@ -2,6 +2,8 @@ package com.dutproject.coffee360admin.model.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.json.JSONObject;
+
 import com.sun.xml.internal.txw2.annotation.XmlElement;
 
 @XmlRootElement(name = "credentials")
@@ -33,4 +35,9 @@ public class AdminAccount {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String toJson() {
+	    return new JSONObject(this).toString();
+	}
+	
 }

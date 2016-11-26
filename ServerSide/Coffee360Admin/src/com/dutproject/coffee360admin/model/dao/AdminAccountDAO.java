@@ -16,8 +16,8 @@ public class AdminAccountDAO extends BaseDAO {
 	public boolean isValidAccount(AdminAccount account) {
 		Response response = target
 			.path("/admin")
-			.request(MediaType.APPLICATION_XML)
-			.post(Entity.entity(account, MediaType.APPLICATION_XML));
+			.request()
+			.post(Entity.entity(account.toJson(), MediaType.APPLICATION_JSON));
 		if (isSuccessful(response.getStatus())) {
 			String accessToken = response.readEntity(String.class);
 			saveAccessToken(accessToken);
