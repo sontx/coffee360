@@ -37,4 +37,8 @@ public class AuthenticationBO {
 		return authenticationDAO.getPermissionByAccountId(accountId);
 	}
 
+	public void updateAvatarUrl(int accountId, String avatarUrl) throws SQLException {
+		authenticationDAO.updateAvatarUrl(accountId, avatarUrl);
+	}
+
 }

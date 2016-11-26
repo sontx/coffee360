@@ -17,4 +17,6 @@ public interface IAuthenticationProvider {
 
 	int getPermissionByAccountId(int accountId) throws SQLException;
 
+	void updateAvatarUrl(int accountId, String avatarUrl) throws SQLException;
+
 }

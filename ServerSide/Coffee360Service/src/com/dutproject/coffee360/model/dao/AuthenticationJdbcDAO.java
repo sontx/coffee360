@@ -123,7 +123,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 		try {
 			String sql = "SELECT account.accountId, account.username, " +
 						 "accountpermission.permission, " +
-						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender, useraccount.avatarUrl " +
+						 "useraccount.address, useraccount.avatarId, useraccount.fullName, useraccount.gender, useraccount.avatarUrl, useraccount.accessToken " +
 						 "FROM account INNER JOIN accountpermission " +
 						 "ON accountpermission.accountPermissionId=account.accountPermissionId " + 
 						 "INNER JOIN useraccount ON useraccount.accountId=account.accountId " +
@@ -143,6 +143,7 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 				account.setFullName(resultSet.getString("fullName"));
 				account.setGender(resultSet.getString("gender").equals("f") ? "fimale" : "male");
 				account.setAvatarUrl(resultSet.getString("avatarUrl"));
+				account.setAccessToken(resultSet.getString("accessToken"));
 				
 				resultSet.close();
 				return account;
@@ -174,6 +175,22 @@ public class AuthenticationJdbcDAO extends JdbcBaseDAO implements IAuthenticatio
 			}
 			resultSet.close();
 			return permission;
+		} finally {
+			if (prepareStatement != null)
+				prepareStatement.close();
+		}
+	}
+
+	@Override
+	public void updateAvatarUrl(int accountId, String avatarUrl) throws SQLException {
+		Connection connection = connectionProvider.getConnection();
+		PreparedStatement prepareStatement = null;
+		try {
+			String sql = "UPDATE useraccount SET avatarUrl=? WHERE accountId=?";
+			prepareStatement = connection.prepareStatement(sql);
+			prepareStatement.setInt(1, accountId);
+			prepareStatement.setString(2, avatarUrl);
+			prepareStatement.executeUpdate();
 		} finally {
 			if (prepareStatement != null)
 				prepareStatement.close();

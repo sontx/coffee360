@@ -140,6 +140,13 @@ public class AuthenticationService {
 
 			if (account == null)
 				throw new Exception();
+			
+			if (account.getAvatarUrl() == null || "".equals(account.getAvatarUrl())) {
+				String accessToken = account.getAccessToken();
+				String avatarUrl = FacebookOAuth.getInstance().getAvatarUrlByAccessToken(accessToken);
+				account.setAvatarUrl(avatarUrl);
+				authenticationBO.updateAvatarUrl(account.getId(), avatarUrl);
+			}
 
 			return Response.ok(account).build();
 
