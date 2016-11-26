@@ -25,7 +25,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             comment.setOwnerUsername(getOwnerUsername(table.getCommentId()));
             listComments.add(comment);
         }
-        return null;
+        return listComments;
     }
     
 
@@ -35,7 +35,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
         PreparedStatement prepareStatement = null;
         try {
             String sql = "SELECT useraccount.fullName FROM `useraccount` INNER JOIN `comment` " + 
-                    "ON useraccount.userAccountId=comment.userAccountId" + 
+                    "ON useraccount.userAccountId=comment.userAccountId " + 
                     "WHERE comment.commentId=?";
             prepareStatement = connection.prepareStatement(sql);
             prepareStatement.setInt(1, commentId);
