@@ -107,8 +107,6 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
         }
     }
 
-
-    
     @Override
     public String addComment(int placeId, int userAccountId, String message) throws SQLException {
         Connection connection = connectionProvider.getConnection();
@@ -122,6 +120,53 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             int i = prepareStatement.executeUpdate();
             boolean isSuccess = i > 0;
             return isSuccess ? message : null;
+        } finally {
+            if (prepareStatement != null)
+                prepareStatement.close();
+        }
+    }
+
+    @Override
+    public String voteComment(int userAccountId, int commentId) throws SQLException {
+        Connection connection = connectionProvider.getConnection();
+        PreparedStatement prepareStatement = null;
+        try {
+            String sql = "INSERT INTO `commentvote`(`commentId`, `voteId`) VALUES (?,?)";
+            prepareStatement = connection.prepareStatement(sql);
+            prepareStatement.setInt(1, commentId);
+            int voteId = new VoteJdbcDAO().addVote(userAccountId);
+            prepareStatement.setInt(2, voteId);
+            int i = prepareStatement.executeUpdate();
+            boolean isSuccess = i > 0;
+            if (isSuccess) {
+                return getComment(commentId).getMessage();
+            }
+            return null;
+        } finally {
+            if (prepareStatement != null)
+                prepareStatement.close();
+        }
+    }
+
+    @Override
+    public CommentTable getComment(int commentId) throws SQLException {
+        Connection connection = connectionProvider.getConnection();
+        PreparedStatement prepareStatement = null;
+        try {
+            String sql = "SELECT * FROM `comment` WHERE commentId=?";
+            prepareStatement = connection.prepareStatement(sql);
+            prepareStatement.setInt(1, commentId);
+            ResultSet rs = prepareStatement.executeQuery();
+            CommentTable comment = null;
+            if (rs.next()) {
+                comment = new CommentTable();
+                comment.setCommentId(rs.getInt("commentId"));
+                comment.setPlaceId(rs.getInt("placeId"));
+                comment.setUserAccountId(rs.getInt("userAccountId"));
+                comment.setMessage(rs.getString("message"));
+                comment.setDatetime(rs.getDate("datetime"));
+            }
+            return comment;
         } finally {
             if (prepareStatement != null)
                 prepareStatement.close();

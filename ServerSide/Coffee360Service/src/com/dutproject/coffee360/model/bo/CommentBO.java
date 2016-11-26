@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dutproject.coffee360.model.bean.Comment;
 import com.dutproject.coffee360.model.bean.NewComment;
+import com.dutproject.coffee360.model.bean.NewCommentVote;
 import com.dutproject.coffee360.model.dao.CommentJdbcDAO;
 import com.dutproject.coffee360.model.dao.UserAccountJdbcDAO;
 import com.dutproject.coffee360.model.dao.provider.ICommentProvider;
@@ -28,6 +29,10 @@ public class CommentBO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String voteComment(NewCommentVote vote) throws SQLException {
+        return commentProvider.voteComment(vote.getUserAccountId(), vote.getCommentId());
     }
 
 }

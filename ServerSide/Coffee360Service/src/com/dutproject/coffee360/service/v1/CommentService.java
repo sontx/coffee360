@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -17,7 +18,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import com.dutproject.coffee360.model.bean.Comment;
 import com.dutproject.coffee360.model.bean.NewComment;
-import com.dutproject.coffee360.model.bean.PlaceReport;
+import com.dutproject.coffee360.model.bean.NewCommentVote;
 import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bo.CommentBO;
 import com.dutproject.coffee360.service.Role;
@@ -57,6 +58,23 @@ public class CommentService extends BaseService {
         PrimitiveType<String> stringType = new PrimitiveType<>();
         stringType.setValue(result);
         return Response.status(200).entity(stringType).build();
+    }
+    
+    @PUT
+    @Path("/place/vote")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Secured({ Role.ROLE_USER})
+    public Response updatePlace(NewCommentVote vote) {
+        try {
+            String message = commentBO.voteComment(vote);
+            PrimitiveType<String> stringType = new PrimitiveType<>();
+            stringType.setValue(message);
+            return Response.ok(stringType).build();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
     
 }
