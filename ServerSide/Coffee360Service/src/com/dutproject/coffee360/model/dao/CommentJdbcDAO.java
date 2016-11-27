@@ -29,7 +29,6 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
         }
         return listComments;
     }
-    
 
     @Override
     public String getOwnerUsername(int commentId) throws SQLException {
@@ -52,7 +51,6 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
                 prepareStatement.close();
         }
     }
-    
 
     @Override
     public boolean isLiked(int userAccountId, int placeId) throws SQLException {
@@ -77,7 +75,6 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
         }
     }
     
-
     @Override
     public List<CommentTable> getCommentTable(int placeId, int fromIndex, int toIndex) throws SQLException {
         Connection connection = connectionProvider.getConnection();
@@ -108,7 +105,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
     }
 
     @Override
-    public String addComment(int placeId, int userAccountId, String message) throws SQLException {
+    public Comment addComment(int placeId, int userAccountId, String message) throws SQLException {
         Connection connection = connectionProvider.getConnection();
         PreparedStatement prepareStatement = null;
         try {
@@ -119,7 +116,18 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             prepareStatement.setString(3, message);
             int i = prepareStatement.executeUpdate();
             boolean isSuccess = i > 0;
-            return isSuccess ? message : null;
+            if (isSuccess) {
+                int commentId = getLastRowId(connection.createStatement(), "comment", "commentId");
+                CommentTable commentTable = getComment(commentId);
+                Comment comment = new Comment();
+                comment.setId(commentTable.getCommentId());
+                comment.setContent(commentTable.getMessage());
+                comment.setLiked(isLiked(commentTable.getUserAccountId(), placeId));
+                comment.setOwnerUsername(getOwnerUsername(commentTable.getCommentId()));
+                comment.setAvatarUrl(userAccountDAO.getUserAccountTable(commentTable.getUserAccountId()).getAvatarUrl());
+                return comment;
+            }
+            return null;
         } finally {
             if (prepareStatement != null)
                 prepareStatement.close();
@@ -127,7 +135,7 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
     }
 
     @Override
-    public String voteComment(int userAccountId, int commentId) throws SQLException {
+    public Comment voteComment(int userAccountId, int commentId) throws SQLException {
         Connection connection = connectionProvider.getConnection();
         PreparedStatement prepareStatement = null;
         try {
@@ -139,7 +147,14 @@ public class CommentJdbcDAO extends JdbcBaseDAO implements ICommentProvider {
             int i = prepareStatement.executeUpdate();
             boolean isSuccess = i > 0;
             if (isSuccess) {
-                return getComment(commentId).getMessage();
+                CommentTable commentTable = getComment(commentId);
+                Comment comment = new Comment();
+                comment.setId(commentTable.getCommentId());
+                comment.setContent(commentTable.getMessage());
+                comment.setLiked(isLiked(commentTable.getUserAccountId(), commentTable.getPlaceId()));
+                comment.setOwnerUsername(getOwnerUsername(commentTable.getCommentId()));
+                comment.setAvatarUrl(userAccountDAO.getUserAccountTable(commentTable.getUserAccountId()).getAvatarUrl());
+                return comment;
             }
             return null;
         } finally {

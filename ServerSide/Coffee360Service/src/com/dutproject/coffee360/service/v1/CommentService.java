@@ -19,7 +19,6 @@ import javax.ws.rs.core.SecurityContext;
 import com.dutproject.coffee360.model.bean.Comment;
 import com.dutproject.coffee360.model.bean.NewComment;
 import com.dutproject.coffee360.model.bean.NewCommentVote;
-import com.dutproject.coffee360.model.bean.PrimitiveType;
 import com.dutproject.coffee360.model.bo.CommentBO;
 import com.dutproject.coffee360.service.Role;
 import com.dutproject.coffee360.service.Secured;
@@ -54,10 +53,8 @@ public class CommentService extends BaseService {
     @Secured({Role.ROLE_USER})
     public Response addComment(NewComment comment, @Context SecurityContext securityContext) throws SQLException {
         int accountId = getAccountId(securityContext);
-        String result = commentBO.addComment(accountId, comment);
-        PrimitiveType<String> stringType = new PrimitiveType<>();
-        stringType.setValue(result);
-        return Response.status(200).entity(stringType).build();
+        Comment result = commentBO.addComment(accountId, comment);
+        return Response.status(200).entity(result).build();
     }
     
     @PUT
@@ -67,10 +64,8 @@ public class CommentService extends BaseService {
     @Secured({ Role.ROLE_USER})
     public Response updatePlace(NewCommentVote vote) {
         try {
-            String message = commentBO.voteComment(vote);
-            PrimitiveType<String> stringType = new PrimitiveType<>();
-            stringType.setValue(message);
-            return Response.ok(stringType).build();
+            Comment result = commentBO.voteComment(vote);
+            return Response.ok(result).build();
         } catch (SQLException e) {
             e.printStackTrace();
         }

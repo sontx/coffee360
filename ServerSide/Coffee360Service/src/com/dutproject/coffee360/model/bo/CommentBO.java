@@ -17,11 +17,11 @@ public class CommentBO {
         return commentProvider.getComments(placeId, fromIndex, toIndex);
     }
 
-    public String addComment(int placeId, int userAccountId, String message) throws SQLException {
+    public Comment addComment(int placeId, int userAccountId, String message) throws SQLException {
         return commentProvider.addComment(placeId, userAccountId, message);
     }
 
-    public String addComment(int accountId, NewComment comment) {
+    public Comment addComment(int accountId, NewComment comment) {
         try {
             int userAccountId = new UserAccountJdbcDAO().getUserAccountByAccountId(accountId).getUserAccountId();
             return addComment(comment.getPlaceId(), userAccountId, comment.getMessage());
@@ -31,7 +31,7 @@ public class CommentBO {
         return null;
     }
 
-    public String voteComment(NewCommentVote vote) throws SQLException {
+    public Comment voteComment(NewCommentVote vote) throws SQLException {
         return commentProvider.voteComment(vote.getUserAccountId(), vote.getCommentId());
     }
 
